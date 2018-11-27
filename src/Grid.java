@@ -10,6 +10,7 @@ import java.util.Random;
 public class Grid {
 
     private Node[][] grid;
+    private boolean wumpusLife;      // keeps track of whether the wumpus lives or not
 
     public Grid(int dim){
         grid = new Node[dim][dim];
@@ -40,8 +41,17 @@ public class Grid {
     public void printGrid(){
         for(int i = 0; i < grid.length; i++){
             for(int j = 0; j < grid[0].length; j++){
-                System.out.println(grid[i][j]);
+                System.out.print(grid[i][j].getSymbol());
             }
+            System.out.println();
         }
+    }
+
+    public boolean getWumpusLife(){
+        return wumpusLife;
+    }
+
+    public void setWumpusLife(boolean life){
+        wumpusLife = life;
     }
 }

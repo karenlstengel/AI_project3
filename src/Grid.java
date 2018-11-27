@@ -21,21 +21,59 @@ public class Grid {
             }
         }
         placeObstacles();
+        setSenses();
     }
 
 
-    public void placeObstacles(){
-
+    public void placeObstacles() {
+        grid[0][0].setSymbol('A');
         Random rand = new Random();
         //nothing can be placed in 0,0 since that is where the user will start.
-        int x = rand.nextInt(grid.length) + 1;
-        int y = rand.nextInt(grid.length) + 1;
+        int x = rand.nextInt(grid.length);
+        int y = rand.nextInt(grid.length);
 
         //place gold randomly
+        grid[x][y].setGold(true);
+        grid[x][y].setSymbol('G');
 
         //place WUMPUS randomly
+        x = rand.nextInt(grid.length);
+        y = rand.nextInt(grid.length);
+
+        while ((x == 0 && y == 0)) {
+            //cant place wumpus on agent
+            x = rand.nextInt(grid.length);
+            y = rand.nextInt(grid.length);
+        }
+        grid[x][y].setWumpus(true);
+        grid[x][y].setSymbol('W');
 
         //place pits w/ 20% on any empty square
+        Random rand2 = new Random();
+
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (!(i == 0 && j == 0) && !grid[i][j].isGold()) {
+                    //cant place pits on traveller or gold
+                    boolean pit = rand2.nextInt(5) == 0;
+                    grid[i][j].setPit(pit);
+
+                    if (grid[i][j].isPit()) {
+                        grid[i][j].setSymbol('P');
+                    }
+
+                }
+            }
+
+        }
+    }
+
+    public void setSenses(){
+        for( int i = 0; i < grid.length; i++){
+            for(int j = 0; j <grid[0].length; j++){
+
+            }
+        }
     }
 
     public void printGrid(){
@@ -47,7 +85,16 @@ public class Grid {
         }
     }
 
-    public boolean getWumpusLife(){
+    public void vals(){
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++) {
+                System.out.println("Gold: " + grid[i][j].isGold() + ", WUMPUS: " + grid[i][j].isWumpus() + ", Pit: " + grid[i][j].isPit());
+            }
+            System.out.println();
+        }
+    }
+
+    public boolean isWumpusLife(){
         return wumpusLife;
     }
 

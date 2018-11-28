@@ -12,7 +12,7 @@ public class Node {
     private boolean wumpus;
     private boolean pit;
     private boolean gold;
-    private char[] sense; // index 0 = stench; 1 = breeze; 2 = glitter; 3 = bump
+    private boolean[] sense; // index 0 = stench; 1 = breeze; 2 = glitter; 3 = bump
     
 
     public Node(){
@@ -21,7 +21,7 @@ public class Node {
         this.wumpus = false;
         this.pit = false;
         this.gold = false;
-        sense = new char[4];
+        sense = new boolean[4];
     }
 
     //get the symbol
@@ -33,11 +33,11 @@ public class Node {
         this.symbol = symbol;
     }
 
-    public void setSense(int index, char s)  {
+    public void setSense(int index, boolean s)  {
         sense[index] = s;
     }
 
-    public char[] getSense() {
+    public boolean[] getSense() {
         return sense;
     }
     public void setGold(boolean gold) {

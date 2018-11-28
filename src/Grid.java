@@ -69,9 +69,53 @@ public class Grid {
     }
 
     public void setSenses(){
-        for( int i = 0; i < grid.length; i++){
-            for(int j = 0; j <grid[0].length; j++){
+        // index 0 = stench; 1 = breeze; 2 = glitter; 3 = bump
 
+        //set boundaries
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j <grid[0].length; j++){
+                System.out.println(i + " " + j);
+                if(i == 0 || j == 0 || i == grid.length - 1|| j == grid.length - 1){
+                    // edge of the graph. set the boundary
+                    grid[i][j].setSense(3, true);
+                }
+
+                if(grid[i][j].isWumpus()){
+                    if(i == 0 || i == grid.length- 1){
+                        grid[i][j-1].setSense(0, true);
+                        grid[i][j+1].setSense(0, true);
+                    }
+                    else if(j == 0 || j == grid.length - 1){
+                        grid[i-1][j].setSense(0, true);
+                        grid[i+1][j].setSense(0, true);
+                    }
+                    else{
+                        grid[i][j-1].setSense(0, true);
+                        grid[i][j+1].setSense(0, true);
+                        grid[i-1][j].setSense(0, true);
+                        grid[i+1][j].setSense(0, true);
+                    }
+                }
+
+                if(grid[i][j].isPit()){
+                    if(i == 0 || i == grid.length - 1){
+                        grid[i][j-1].setSense(1, true);
+                        grid[i][j+1].setSense(1, true);
+                    }
+                    else if(j == 0 || j == grid.length - 1){
+                        grid[i-1][j].setSense(1, true);
+                        grid[i+1][j].setSense(1, true);
+                    }
+                    else{
+                        grid[i][j-1].setSense(1, true);
+                        grid[i][j+1].setSense(1, true);
+                        grid[i-1][j].setSense(1, true);
+                        grid[i+1][j].setSense(1, true);
+                    }
+                }
+                if(grid[i][j].isGold()){
+                    grid[i][j].setSense(2, true);
+                }
             }
         }
     }
@@ -86,9 +130,19 @@ public class Grid {
     }
 
     public void vals(){
+        /**
         for(int i = 0; i < grid.length; i++){
             for(int j = 0; j < grid[0].length; j++) {
                 System.out.println("Gold: " + grid[i][j].isGold() + ", WUMPUS: " + grid[i][j].isWumpus() + ", Pit: " + grid[i][j].isPit());
+            }
+            System.out.println();
+        } */
+
+        // index 0 = stench; 1 = breeze; 2 = glitter; 3 = bump
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++) {
+                boolean[] sense = grid[i][j].getSense();
+                System.out.println("Stench: " + sense[0] + ", breeze: " + sense[1] + ", glitter: " + sense[2] + ", bump: " + sense[3]);
             }
             System.out.println();
         }

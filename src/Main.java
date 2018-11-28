@@ -6,7 +6,7 @@ public class Main {
             Grid g4 = new Grid(4);
             g4.printGrid();
             g4.vals();
-
+/**
             Grid g5 = new Grid(5);
             g5.printGrid();
             g5.vals();
@@ -18,7 +18,7 @@ public class Main {
             Grid g10 = new Grid(10);
             g10.printGrid();
             g10.vals();
-
+ */
         }
 
 }

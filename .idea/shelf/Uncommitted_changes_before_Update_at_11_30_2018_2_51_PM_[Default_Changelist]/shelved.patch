@@ -1,0 +1,71 @@
+Index: src/Node.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/**\r\n *\r\n * @author\r\n * this class represents the locations on the search grid\r\n */\r\n\r\n\r\npublic class Node {\r\n\r\n    private char symbol; //tells what the square contains\r\n\r\n    public Node(){\r\n           this.symbol = ' ';\r\n    }\r\n\r\n    //set the symbol\r\n    public void setSymbol(char symbol) {\r\n        this.symbol = symbol;\r\n    }\r\n\r\n\r\n    //get the symbol\r\n    public char getSymbol() {\r\n        return symbol;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Node.java	(revision b7d20326706c3f05c47a4b065597f0f106922c7d)
++++ src/Node.java	(date 1543614654299)
+@@ -8,6 +8,8 @@
+ public class Node {
+ 
+     private char symbol; //tells what the square contains
++    private boolean hole, wumpus, gold; //physical items
++    private boolean breeze, stench, glitter; //percepts
+ 
+     public Node(){
+            this.symbol = ' ';
+@@ -20,7 +22,19 @@
+ 
+ 
+     //get the symbol
+-    public char getSymbol() {
++    public char getSymbol()
++    {
+         return symbol;
+     }
++
++    public boolean[] getPhysicalItems()
++    {
++        return {hole, wumpus, gold};
++    }
++
++    //get an array of percepts
++    public boolean[] getPercepts()
++    {
++        return {breeze, stench, glitter};
++    }
+ }
+Index: src/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>public class Main {\r\n\r\n        public static void main(String args[]){\r\n            System.out.println(\"hello world\");\r\n        }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Main.java	(revision b7d20326706c3f05c47a4b065597f0f106922c7d)
++++ src/Main.java	(date 1543614654296)
+@@ -4,4 +4,7 @@
+             System.out.println("hello world");
+         }
+ 
++        //Create our agent
++        //Create our grid
++
+ }
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/vcs.xml	(date 0)
++++ .idea/vcs.xml	(date 0)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file

@@ -130,4 +130,36 @@ public class Agent {
         }
         return entered;
     }
+
+    public void decide(){
+        //call ligic base and move or something
+    }
+
+    public void move(){
+        //move
+    }
+
+    public void rotate(String c){
+          if(c.equals("clockwise")){
+              //rotate direction clockwise
+          }
+          else if(c.equals("counter")){
+              //rotate direction counter clockwise
+          }
+    }
+
+    public boolean shoot(){
+        boolean wLife = true;
+        if(arrow){
+            // shoot in current direction. if arrow enters square of wumpus then return a scream and set wumpuslife = false
+
+            //else dont change wumpus
+        }
+
+        else{
+            System.out.println("no arrows");
+        }
+
+        return wLife;
+    }
 }

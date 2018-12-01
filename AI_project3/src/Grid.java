@@ -20,6 +20,7 @@ public class Grid {
                 grid[i][j] = new Node();
             }
         }
+        this.wumpusLife = true;
         placeObstacles();
         setSenses();
     }

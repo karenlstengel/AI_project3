@@ -34,58 +34,6 @@ public class Agent {
         }
     }
 
-    //get and check boolean methods
-
-    public boolean isArrow() {
-        return arrow;
-    }
-
-    public boolean isDead() {
-        return isDead;
-    }
-
-    public boolean isFoundGold() {
-        return foundGold;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public String getDirection() {
-        return direction;
-    }
-
-
-    //set methods
-    public void setArrow(boolean arrow) {
-        this.arrow = arrow;
-    }
-
-    public void setDead(boolean dead) {
-        isDead = dead;
-    }
-
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
-
-    public void setFoundGold(boolean foundGold) {
-        this.foundGold = foundGold;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public NodePercept[][] getMemory() {
-        return memory;
-    }
-
-    public boolean[] getPrecepts(){
-        boolean[] temp = new boolean[1];
-        return temp;
-    }
 
     //   agent action methods
 
@@ -161,5 +109,59 @@ public class Agent {
         }
 
         return wLife;
+    }
+
+
+    //get and check boolean methods
+
+    public boolean isArrow() {
+        return arrow;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public boolean isFoundGold() {
+        return foundGold;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+
+    //set methods
+    public void setArrow(boolean arrow) {
+        this.arrow = arrow;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+
+    public void setFoundGold(boolean foundGold) {
+        this.foundGold = foundGold;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public NodePercept[][] getMemory() {
+        return memory;
+    }
+
+    public boolean[] getPrecepts(){
+        boolean[] temp = new boolean[1];
+        return temp;
     }
 }

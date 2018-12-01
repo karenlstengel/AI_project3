@@ -40,8 +40,8 @@ public class Agent {
     public void solve(Grid g){
 
          setupPreceptsGrid(g.getGrid()[0].length);
-         Node current = g.getNode(0,0);
-         while(!isDead || !(foundGold && current == g.getNode(0,0))){
+         Node current = g.getNode(1,1);
+         while(!isDead || !(foundGold && current == g.getNode(1,1))){
              //do moving stuff
 
              if(current.isPit()){

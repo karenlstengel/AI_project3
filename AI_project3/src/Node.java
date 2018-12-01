@@ -58,6 +58,7 @@ public class Node {
     public boolean isWumpus() {
         return wumpus;
     }
+    
     public void setWumpus(boolean wumpus){
         this.wumpus = wumpus;
     }

@@ -195,4 +195,12 @@ public class Grid {
     public void setWumpusLife(boolean life){
         wumpusLife = life;
     }
+
+    public Node getNode(int i, int j){
+        return grid[i][j];
+    }
+
+    public Node[][] getGrid(){
+        return grid;
+    }
 }

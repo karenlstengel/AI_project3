@@ -20,6 +20,7 @@ public class Grid {
                 grid[i][j] = new Node();
             }
         }
+        this.wumpusLife = true;
         placeObstacles();
         setSenses();
     }
@@ -68,53 +69,93 @@ public class Grid {
         }
     }
 
-    public void setSenses(){
+    public void setSenses() {
         // index 0 = stench; 1 = breeze; 2 = glitter; 3 = bump
 
         //set boundaries
-        for(int i = 0; i < grid.length; i++){
-            for(int j = 0; j <grid[0].length; j++){
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
                 System.out.println(i + " " + j);
-                if(i == 0 || j == 0 || i == grid.length - 1|| j == grid.length - 1){
+                //we need to F with this
+                if (i == 0 || j == 0 || i == grid.length - 1 || j == grid.length - 1) {
                     // edge of the graph. set the boundary
                     grid[i][j].setSense(3, true);
                 }
 
-                if(grid[i][j].isWumpus()){
-                    if(i == 0 || i == grid.length- 1){
-                        grid[i][j-1].setSense(0, true);
-                        grid[i][j+1].setSense(0, true);
-                    }
-                    else if(j == 0 || j == grid.length - 1){
-                        grid[i-1][j].setSense(0, true);
-                        grid[i+1][j].setSense(0, true);
-                    }
-                    else{
-                        grid[i][j-1].setSense(0, true);
-                        grid[i][j+1].setSense(0, true);
-                        grid[i-1][j].setSense(0, true);
-                        grid[i+1][j].setSense(0, true);
+                //good
+                if (grid[i][j].isWumpus()) {
+                    if (i == 0 && j == grid.length - 1) { //right corner
+                        grid[i][j - 1].setSense(0, true);
+                        grid[i + 1][j].setSense(0, true);
+                    } else if (i == grid.length - 1 && j == 0) { //bottom left corner
+                        grid[i - 1][j].setSense(0, true);
+                        grid[i][j + 1].setSense(0, true);
+                    } else if (i == grid.length - 1 && j == grid.length - 1) { //bottom right corner
+                        grid[i - 1][j].setSense(0, true);
+                        grid[i][j - 1].setSense(0, true);
+                    } else if (i == 0) { //top wall
+                        grid[i][j - 1].setSense(0, true);
+                        grid[i + 1][j].setSense(0, true);
+                        grid[i][j + 1].setSense(0, true);
+
+                    } else if (j == grid.length - 1) { //right wall
+                        grid[i - 1][j].setSense(0, true);
+                        grid[i][j - 1].setSense(0, true);
+                        grid[i + 1][j].setSense(0, true);
+                    } else if (i == grid.length - 1) { //bottom wall
+                        grid[i - 1][j].setSense(0, true);
+                        grid[i][j - 1].setSense(0, true);
+                        grid[i][j + 1].setSense(0, true);
+                    } else if (j == 0) { //left wall
+                        grid[i - 1][j].setSense(0, true);
+                        grid[i][j + 1].setSense(0, true);
+                        grid[i + 1][j].setSense(0, true);
+                    } else { //middle square
+                        grid[i][j - 1].setSense(0, true);
+                        grid[i][j + 1].setSense(0, true);
+                        grid[i - 1][j].setSense(0, true);
+                        grid[i + 1][j].setSense(0, true);
                     }
                 }
 
-                if(grid[i][j].isPit()){
-                    if(i == 0 || i == grid.length - 1){
-                        grid[i][j-1].setSense(1, true);
-                        grid[i][j+1].setSense(1, true);
+                if (grid[i][j].isPit()) {
+                    if (i == 0 && j == grid.length - 1) { //right corner
+                        grid[i][j - 1].setSense(1, true);
+                        grid[i + 1][j].setSense(1, true);
+                    } else if (i == grid.length - 1 && j == 0) { //bottom left corner
+                        grid[i - 1][j].setSense(1, true);
+                        grid[i][j + 1].setSense(1, true);
+                    } else if (i == grid.length - 1 && j == grid.length - 1) { //bottom right corner
+                        grid[i - 1][j].setSense(1, true);
+                        grid[i][j - 1].setSense(1, true);
+                    } else if (i == 0) { //top wall
+                        grid[i][j - 1].setSense(1, true);
+                        grid[i + 1][j].setSense(1, true);
+                        grid[i][j + 1].setSense(1, true);
+
+                    } else if (j == grid.length - 1) { //right wall
+                        grid[i - 1][j].setSense(1, true);
+                        grid[i][j - 1].setSense(1, true);
+                        grid[i + 1][j].setSense(1, true);
+                    } else if (i == grid.length - 1) { //bottom wall
+                        grid[i - 1][j].setSense(1, true);
+                        grid[i][j - 1].setSense(1, true);
+                        grid[i][j + 1].setSense(1, true);
+                    } else if (j == 0) { //left wall
+                        grid[i - 1][j].setSense(1, true);
+                        grid[i][j + 1].setSense(1, true);
+                        grid[i + 1][j].setSense(1, true);
+                    } else { //middle square
+                        grid[i][j - 1].setSense(1, true);
+                        grid[i][j + 1].setSense(1, true);
+                        grid[i - 1][j].setSense(1, true);
+                        grid[i + 1][j].setSense(1, true);
                     }
-                    else if(j == 0 || j == grid.length - 1){
-                        grid[i-1][j].setSense(1, true);
-                        grid[i+1][j].setSense(1, true);
+
+
+                    if (grid[i][j].isGold()) {
+                        grid[i][j].setSense(2, true);
                     }
-                    else{
-                        grid[i][j-1].setSense(1, true);
-                        grid[i][j+1].setSense(1, true);
-                        grid[i-1][j].setSense(1, true);
-                        grid[i+1][j].setSense(1, true);
-                    }
-                }
-                if(grid[i][j].isGold()){
-                    grid[i][j].setSense(2, true);
                 }
             }
         }
@@ -154,5 +195,13 @@ public class Grid {
 
     public void setWumpusLife(boolean life){
         wumpusLife = life;
+    }
+
+    public Node getNode(int i, int j){
+        return grid[i][j];
+    }
+
+    public Node[][] getGrid(){
+        return grid;
     }
 }

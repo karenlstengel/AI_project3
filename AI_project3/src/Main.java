@@ -6,6 +6,8 @@ public class Main {
             Grid g4 = new Grid(4);
             g4.printGrid();
             g4.vals();
+            Agent a = new Agent();
+            a.solve(g4);
 /**
             Grid g5 = new Grid(5);
             g5.printGrid();

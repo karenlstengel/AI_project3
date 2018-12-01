@@ -11,7 +11,7 @@ public class Node {
     private boolean wumpus;
     private boolean pit;
     private boolean gold;
-    private boolean[] sense; // index 0 = stench; 1 = breeze; 2 = glitter; 3 = bump
+    private boolean[] sense; // index 0 = stench; 1 = breeze; 2 = glitter
     
 
     public Node(){
@@ -20,7 +20,7 @@ public class Node {
         this.wumpus = false;
         this.pit = false;
         this.gold = false;
-        sense = new boolean[4];
+        sense = new boolean[3];
     }
 
     //get the symbol

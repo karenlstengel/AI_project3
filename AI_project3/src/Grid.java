@@ -1,7 +1,7 @@
 import java.util.Random;
 
 /**
- * @author
+ * @author Karen Stengel and Jared Thompson
  * this class manages the grid which the user will explore
  * the grid is filled with nodes
  *
@@ -17,7 +17,7 @@ public class Grid {
 
         for(int i = 0; i < dim; i++){
             for(int j = 0; j <dim; j++){
-                grid[i][j] = new Node();
+                grid[i][j] = new Node(i,j);
             }
         }
         this.wumpusLife = true;
@@ -165,13 +165,7 @@ public class Grid {
     }
 
     public void vals(){
-        /**
-        for(int i = 0; i < grid.length; i++){
-            for(int j = 0; j < grid[0].length; j++) {
-                System.out.println("Gold: " + grid[i][j].isGold() + ", WUMPUS: " + grid[i][j].isWumpus() + ", Pit: " + grid[i][j].isPit());
-            }
-            System.out.println();
-        } */
+
 
         // index 0 = stench; 1 = breeze; 2 = glitter; 3 = bump
         for(int i = 0; i < grid.length; i++){

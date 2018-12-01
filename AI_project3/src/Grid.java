@@ -76,12 +76,6 @@ public class Grid {
         //set boundaries
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
-                System.out.println(i + " " + j);
-                //we need to F with this
-                if (i == 0 || j == 0 || i == grid.length - 1 || j == grid.length - 1) {
-                    // edge of the graph. set the boundary
-                    grid[i][j].setSense(3, true);
-                }
 
                 //good
                 if (grid[i][j].isWumpus()) {
@@ -184,7 +178,7 @@ public class Grid {
         for(int i = 0; i < grid.length; i++){
             for(int j = 0; j < grid[0].length; j++) {
                 boolean[] sense = grid[i][j].getSense();
-                System.out.println("Stench: " + sense[0] + ", breeze: " + sense[1] + ", glitter: " + sense[2] + ", bump: " + sense[3]);
+                System.out.println("Stench: " + sense[0] + ", breeze: " + sense[1] + ", glitter: " + sense[2]);
             }
             System.out.println();
         }

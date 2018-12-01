@@ -154,7 +154,7 @@ public class Agent {
         if(arrow){
             // shoot in current direction. if arrow enters square of wumpus then return a scream and set wumpuslife = false
 
-            //else dont change wumpus
+            //else dont change wumpusLife
         }
 
         else{

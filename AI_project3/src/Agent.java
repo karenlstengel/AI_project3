@@ -5,9 +5,16 @@
  * the cave. responisible for moving and making locial decisions.
  */
 
+import java.io.*;
+import java.util.*;
+
 
 public class Agent {
 
+    private int top_wall; // top_wall == grid.length -1 bot_wall == 0 left_wall == grid.length -1 ....
+    private int bot_wall = 1;
+    private int left_wall;
+    private int right_wall = 1;
     private boolean foundGold;
     private int score;
     private NodePercept[][] memory;
@@ -91,6 +98,41 @@ public class Agent {
 
     public void move(){
         //move
+    }
+
+    public void update_memory(int x, int y, Grid grid)
+    {
+
+        // 0 = stench, 1 = breeze, 2 = glitter
+        boolean[] senses = grid.getGrid()[y][x].getSense();
+        if (senses[0] == true)
+        {
+
+            int up = y+1;
+            int down = y -1;
+            int left = x -1; //need to remember to update to a wall
+            int right = x+1;
+
+
+
+
+            this.memory[y][x]
+
+        }
+
+
+
+
+    }
+
+    public void explore_safe(Grid grid)
+    {
+        Stack<Node> node_stack = new Stack();
+                node_stack.push(grid.getGrid()[0][0]);
+                System.out.println(node_stack.pop().getSymbol());
+
+
+
     }
 
     public void rotate(String c){

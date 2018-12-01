@@ -159,7 +159,7 @@ public class Grid {
     public void printGrid(){
         for(int i = 0; i < grid.length; i++){
             for(int j = 0; j < grid[0].length; j++){
-                System.out.print(grid[i][j].getSymbol());
+                System.out.print(grid[i][j].getSymbol() + " ");
             }
             System.out.println();
         }

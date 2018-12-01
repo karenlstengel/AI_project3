@@ -12,7 +12,11 @@ public class NodePercept {
     private boolean isSolved = false; //if we have either visited and is safe or have inferred whats in the pit
     
 
-    public NodePercept(){}
+    public NodePercept()
+    {
+
+
+    }
 
     //set methods
     

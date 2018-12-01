@@ -9,8 +9,10 @@
 public class Agent {
 
     private Boolean foundGold = false;
+    private array[][] knowledge_base;
 
     public Agent(){
+
 
     }
 }

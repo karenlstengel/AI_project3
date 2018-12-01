@@ -11,14 +11,14 @@ public class Agent {
     private boolean foundGold;
     private int score;
     private NodePercept[][] memory;
-    private String direction;
+    private String direction;    // can be  north (i -1), south (i +1), east(j +1), west (j-1)
     private boolean arrow;
     private boolean isDead;
 
     public Agent(){
          this.foundGold = false;
          this.arrow = true;
-         this.direction = "right";
+         this.direction = "east";      //right
          this.isDead = false;
 
     }
@@ -80,7 +80,12 @@ public class Agent {
     }
 
     public void decide(){
-        //call ligic base and move or something
+        //call logic base and move or something
+
+        //grid.setWumpuslife = shoot()
+        //if iswumpuslife
+        //print scream -> for all node precepts set wumpus = false
+        //else all np current - edge wumpus = false
     }
 
     public void move(){
@@ -90,16 +95,82 @@ public class Agent {
     public void rotate(String c){
           if(c.equals("clockwise")){
               //rotate direction clockwise
+              if(direction.equals("north")){
+                  direction = "east";
+              }
+              else if(direction.equals("south")){
+                   direction = "west";
+              }
+              else if(direction.equals("east")){
+                  direction = "south";
+              }
+              else if(direction.equals("west")){
+                  direction = "north";
+              }
+              else{
+                  System.out.println("direction not valid.");
+              }
           }
           else if(c.equals("counter")){
               //rotate direction counter clockwise
+              if(direction.equals("north")){
+                  direction = "west";
+              }
+              else if(direction.equals("south")){
+                  direction = "east";
+              }
+              else if(direction.equals("east")){
+                  direction = "north";
+              }
+              else if(direction.equals("west")){
+                  direction = "south";
+              }
+              else{
+                  System.out.println("direction not valid.");
+              }
           }
     }
 
-    public boolean shoot(){
-        boolean wLife = true;
+    public boolean shoot(Grid g, Node current){
+        boolean wLife = g.isWumpusLife();
+        Node[][] grid = g.getGrid();
+
         if(arrow){
-            // shoot in current direction. if arrow enters square of wumpus then return a scream and set wumpuslife = false
+            // shoot in current direction.
+            //north (i -1), south (i +1), east(j +1), west (j-1)
+
+
+            // if arrow enters square of wumpus then wumpuslife = false
+            if(direction.equals("north")){
+               for(int i = current.getX(); i >= 0; i--){
+                   if(grid[i][current.getY()].isWumpus()){
+                       wLife = false;
+                   }
+               }
+            }
+            else if(direction.equals("south")){
+                for(int i = current.getX(); i < grid.length; i++){
+                    if(grid[i][current.getY()].isWumpus()){
+                        wLife = false;
+                    }
+                }
+            }
+            else if(direction.equals("east")){
+                for(int j = current.getY(); j < grid.length; j ++){
+                    if(grid[current.getX()][j].isWumpus()){
+                        wLife = false;
+                    }
+                }
+            }
+            else{
+                //direction = west
+                for(int j = current.getY(); j >= 0; j--){
+                    if(grid[current.getX()][j].isWumpus()){
+                        wLife = false;
+                    }
+                }
+            }
+            arrow = false;
 
             //else dont change wumpusLife
         }

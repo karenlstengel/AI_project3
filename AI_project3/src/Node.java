@@ -12,15 +12,19 @@ public class Node {
     private boolean pit;
     private boolean gold;
     private boolean[] sense; // index 0 = stench; 1 = breeze; 2 = glitter
+    private int x;
+    private int y;
     
 
-    public Node(){
+    public Node(int x, int y){
 
         this.symbol = '_';
         this.wumpus = false;
         this.pit = false;
         this.gold = false;
         sense = new boolean[3];
+        this.x = x;
+        this.y = y;
     }
 
     //get the symbol
@@ -61,6 +65,14 @@ public class Node {
     
     public void setWumpus(boolean wumpus){
         this.wumpus = wumpus;
+    }
+
+    public int getX(){
+        return x;
+    }
+
+    public int getY(){
+        return y;
     }
 
 }

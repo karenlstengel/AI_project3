@@ -17,7 +17,7 @@ public class Grid {
 
         for(int i = 0; i < dim; i++){
             for(int j = 0; j <dim; j++){
-                grid[i][j] = new Node();
+                grid[i][j] = new Node(i,j);
             }
         }
         this.wumpusLife = true;

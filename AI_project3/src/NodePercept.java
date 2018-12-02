@@ -10,9 +10,13 @@ public class NodePercept {
     private boolean wall;
     private boolean visited;
     private boolean isSolved; //if we have either visited and is safe or have inferred whats in the pit
-    
+    private char symbol;
+    private int y_val;
+    private int x_val;
 
-    public NodePercept(){
+    public NodePercept(int y, int x){
+        y_val = y;
+        x_val = x;
         this.wall = false;
         this.gold = false;
         this.wumpus = true;
@@ -22,7 +26,20 @@ public class NodePercept {
     }
 
     //set methods
-    
+
+
+    public int getY()
+    { return y_val;}
+
+    public int getX()
+    {return x_val;}
+
+    public void setSymbol(char S)
+    {this.symbol = S;}
+
+    public char getSymbol()
+    {return symbol;}
+
     public void setPit(boolean pit) {
         this.pit = pit;
     }

@@ -7,7 +7,9 @@ public class Main {
             g4.printGrid();
             g4.vals();
             Agent a = new Agent();
-            a.solve(g4);
+            a.setupPreceptsGrid(4);
+           // a.explore_safe(g4);
+           // a.solve(g4);
 /**
             Grid g5 = new Grid(5);
             g5.printGrid();

@@ -4,22 +4,42 @@
 
 public class NodePercept {
 
-    // should always be 0<= x <= 1.0
-    private boolean wumpus = true; //unless otherwise found to not have a wumpus
-    private boolean pit = true; // unless otherwise found to not have a pit
-    private boolean gold = false;
-    private boolean visited = false;
-    private boolean isSolved = false; //if we have either visited and is safe or have inferred whats in the pit
-    
+    private boolean wumpus; //unless otherwise found to not have a wumpus
+    private boolean pit; // unless otherwise found to not have a pit
+    private boolean gold;
+    private boolean wall;
+    private boolean visited;
+    private boolean isSolved; //if we have either visited and is safe or have inferred whats in the pit
+    private char symbol;
+    private int y_val;
+    private int x_val;
 
-    public NodePercept()
-    {
-
-
+    public NodePercept(int y, int x){
+        y_val = y;
+        x_val = x;
+        this.wall = false;
+        this.gold = false;
+        this.wumpus = true;
+        this.pit = true;
+        this.visited = false;
+        this.isSolved = false;
     }
 
     //set methods
-    
+
+
+    public int getY()
+    { return y_val;}
+
+    public int getX()
+    {return x_val;}
+
+    public void setSymbol(char S)
+    {this.symbol = S;}
+
+    public char getSymbol()
+    {return symbol;}
+
     public void setPit(boolean pit) {
         this.pit = pit;
     }
@@ -40,6 +60,9 @@ public class NodePercept {
         this.wumpus = wumpus;
     }
 
+    public void setWall(boolean wall) {
+        this.wall = wall;
+    }
     //boolean check methods
 
     public boolean isGold() {
@@ -60,6 +83,10 @@ public class NodePercept {
 
     public boolean isWumpus() {
         return wumpus;
+    }
+
+    public boolean isWall() {
+        return wall;
     }
 }
 

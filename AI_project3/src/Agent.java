@@ -32,14 +32,22 @@ public class Agent {
     }
 
     //set up precepts grid
-    public void setupPreceptsGrid(int x){
-        this.memory = new NodePercept[x][x];
-
+    public void setupPreceptsGrid(int dim) {
+        this.memory = new NodePercept[dim + 2][dim + 2];
+        System.out.println(memory[0].length);
         for(int i = 0; i < memory.length; i++){
-            for( int j = 0; j < memory.length; j++){
-                memory[i][j] = new NodePercept();
+            for(int j = 0; j < memory.length; j++){
+                memory[i][j] = new NodePercept(i,j);
+                if(i == 0 || i == memory.length - 1 || j == 0 || j == memory.length - 1 ){
+                    memory[i][j].setSymbol('+');
+                }
+                else
+                    memory[i][j].setSymbol('_');
+                System.out.print(memory[i][j].getSymbol() + " ");
             }
+            System.out.println();
         }
+
     }
 
 
@@ -48,8 +56,8 @@ public class Agent {
     public void solve(Grid g){
 
          setupPreceptsGrid(g.getGrid()[0].length);
-         Node current = g.getNode(0,0);
-         while(!isDead || !(foundGold && current == g.getNode(0,0))){
+         Node current = g.getNode(1,1);
+         while(!isDead || !(foundGold && current == g.getNode(1,1))){
              //do moving stuff
 
              if(current.isPit()){
@@ -100,28 +108,64 @@ public class Agent {
         //move
     }
 
-    public void update_memory(int x, int y, Grid grid)
+
+
+    public ArrayList<NodePercept> return_adjacent(int y, int x)
+    {
+       ArrayList<NodePercept> adjacent = new ArrayList();
+
+       adjacent.add(memory[y+1][x]);
+       adjacent.add(memory[y-1][x]);
+       adjacent.add(memory[y][x-1]);
+       adjacent.add(memory[y][x+1]);
+
+
+       for(int i = 0; i < adjacent.size(); i++)
+           if(adjacent.get(i).getSymbol() == '+'){
+
+                if(adjacent.get(i).getY() > 1 && adjacent.get(i).getX() > 1) //then it must be other wall
+                {
+
+
+                }
+
+
+           adjacent.get(i).isWall(true);
+           adjacent.remove(i);
+
+           } //remove any walls
+
+       return adjacent;
+
+    }
+
+    public void update_memory(int y, int x, Grid grid)
     {
 
         // 0 = stench, 1 = breeze, 2 = glitter
         boolean[] senses = grid.getGrid()[y][x].getSense();
-        if (senses[0] == true)
+        ArrayList<NodePercept> adjacent = return_adjacent(y, x);
+
+
+        if (senses[0] == false)
         {
+            for(int j = 0; j < adjacent.size(); j++){
+                adjacent.get(j).setWumpus(false);}
 
-            int up = y+1;
-            int down = y -1;
-            int left = x -1; //need to remember to update to a wall
-            int right = x+1;
-
-
-
-
-            this.memory[y][x]
+        }
+        if (senses[1] == false) // if there is no breeze
+        {
+            for(int j = 0; j < adjacent.size(); j++){
+            adjacent.get(j).setPit(false);}
 
         }
 
+        if(senses[2] == true) //if there is a glitter there be gold
+        {
+            for(int j = 0; j < adjacent.size(); j++){
+                adjacent.get(j).setGold(true);}
 
-
+        }
 
     }
 

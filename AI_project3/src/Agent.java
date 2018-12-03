@@ -167,7 +167,7 @@ public class Agent {
         //int y = Node.getY();
         //int x = Node.getX();
         // 0 = stench, 1 = breeze, 2 = glitter
-        boolean[] senses = grid.getGrid()[y][x].getSense();
+        boolean[] senses = grid.getGrid()[y][x].getSense(); //index 0 = stench, 1 = breeze, 2 = glitter
 
         ArrayList<NodePercept> adjacent = return_adjacent(y, x);
 

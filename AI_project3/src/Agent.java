@@ -76,7 +76,7 @@ public class Agent {
                  isDead = true;
                  System.out.println("Game over. You fell in a pit...");
              }
-             else if(current.isWumpus()){
+             else if(current.isWumpus()){   //Yo Jared this doesn't work. "Current" is a nodePercept, so if you're checking if the wumpus is in this square, it could just be percieved (if the wumpus is narrowed down to 2 or 3 squares). Also this doesn't check to verify the wumpus is dead.
                  isDead = true;
                  System.out.println("Game over. You were eaten by the WUMPUS X.X");
              }

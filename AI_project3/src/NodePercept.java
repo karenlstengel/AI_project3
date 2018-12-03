@@ -13,6 +13,7 @@ public class NodePercept {
     private char symbol;
     private int y_val;
     private int x_val;
+    private boolean is_safe;
 
     public NodePercept(int y, int x){
         y_val = y;
@@ -23,6 +24,7 @@ public class NodePercept {
         this.pit = true;
         this.visited = false;
         this.isSolved = false;
+        this.is_safe = false;
     }
 
     //set methods
@@ -52,8 +54,14 @@ public class NodePercept {
         isSolved = solved;
     }
 
+    public void setSafe(boolean is_safe) {
+        this.is_safe = is_safe;
+        symbol = 's';
+    }
+
     public void setVisited(boolean visited) {
         this.visited = visited;
+        this.setSymbol('v');
     }
 
     public void setWumpus(boolean wumpus) {
@@ -67,6 +75,10 @@ public class NodePercept {
 
     public boolean isGold() {
         return gold;
+    }
+
+    public boolean is_safe() {
+        return is_safe;
     }
 
     public boolean isPit() {

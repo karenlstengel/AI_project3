@@ -1,3 +1,6 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class Main {
 
         public static void main(String args[]){
@@ -5,9 +8,32 @@ public class Main {
 
             Grid g4 = new Grid(4);
             g4.printGrid();
-            g4.vals();
+           // g4.vals();
             Agent a = new Agent();
             a.setupPreceptsGrid(4);
+           // System.out.println("hi");
+            //a.printMemory();
+
+
+            ArrayList<NodePercept> val =  a.return_adjacent(1,1);
+            System.out.println(val.size());
+            for(int i = 0; i < val.size(); i++)
+            {
+                System.out.println(val.get(i).getSymbol());
+            }
+
+
+
+           // System.out.println(g4.getGrid().length);
+            //System.out.println(g4.getGrid()[1][1].getX() + " " + g4.getGrid()[1][1].getY());
+
+
+            //System.out.println(a.return_adjacent(1,1));
+
+           a.explore_safe(g4);
+
+           //System.out.println(a.safe_space());
+
            // a.explore_safe(g4);
            // a.solve(g4);
 /**

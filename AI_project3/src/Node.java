@@ -16,7 +16,7 @@ public class Node {
     private int y;
     
 
-    public Node(int x, int y){
+    public Node(int y, int x){
 
         this.symbol = '_';
         this.wumpus = false;

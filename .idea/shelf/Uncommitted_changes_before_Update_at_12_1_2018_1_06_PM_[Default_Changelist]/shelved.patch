@@ -1,0 +1,598 @@
+Index: AI_project3/src/NodePercept.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/**\r\n * this class is what the agent understands.\r\n */\r\n\r\npublic class NodePercept {\r\n\r\n    // should always be 0<= x <= 1.0\r\n    private boolean wumpus = true; //unless otherwise found to not have a wumpus\r\n    private boolean pit = true; // unless otherwise found to not have a pit\r\n    private boolean gold = false;\r\n    private boolean visited = false;\r\n    private boolean isSolved = false; //if we have either visited and is safe or have inferred whats in the pit\r\n    \r\n\r\n    public NodePercept(){}\r\n\r\n    //set methods\r\n    \r\n    public void setPit(boolean pit) {\r\n        this.pit = pit;\r\n    }\r\n\r\n    public void setGold(boolean gold) {\r\n        this.gold = gold;\r\n    }\r\n\r\n    public void setSolved(boolean solved) {\r\n        isSolved = solved;\r\n    }\r\n\r\n    public void setVisited(boolean visited) {\r\n        this.visited = visited;\r\n    }\r\n\r\n    public void setWumpus(boolean wumpus) {\r\n        this.wumpus = wumpus;\r\n    }\r\n\r\n    //boolean check methods\r\n\r\n    public boolean isGold() {\r\n        return gold;\r\n    }\r\n\r\n    public boolean isPit() {\r\n        return pit;\r\n    }\r\n\r\n    public boolean isSolved() {\r\n        return isSolved;\r\n    }\r\n\r\n    public boolean isVisited() {\r\n        return visited;\r\n    }\r\n\r\n    public boolean isWumpus() {\r\n        return wumpus;\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- AI_project3/src/NodePercept.java	(date 1543692499000)
++++ AI_project3/src/NodePercept.java	(date 1543692520419)
+@@ -5,57 +5,13 @@
+ public class NodePercept {
+ 
+     // should always be 0<= x <= 1.0
+-    private boolean wumpus = true; //unless otherwise found to not have a wumpus
+-    private boolean pit = true; // unless otherwise found to not have a pit
++    private boolean wumpus = false;
++    private boolean pit = false;
+     private boolean gold = false;
+-    private boolean visited = false;
+-    private boolean isSolved = false; //if we have either visited and is safe or have inferred whats in the pit
+-    
+-
+-    public NodePercept(){}
+-
+-    //set methods
+-    
+-    public void setPit(boolean pit) {
+-        this.pit = pit;
+-    }
+-
+-    public void setGold(boolean gold) {
+-        this.gold = gold;
+-    }
+-
+-    public void setSolved(boolean solved) {
+-        isSolved = solved;
+-    }
+-
+-    public void setVisited(boolean visited) {
+-        this.visited = visited;
+-    }
+-
+-    public void setWumpus(boolean wumpus) {
+-        this.wumpus = wumpus;
+-    }
+-
+-    //boolean check methods
+-
+-    public boolean isGold() {
+-        return gold;
+-    }
+ 
+-    public boolean isPit() {
+-        return pit;
+-    }
++    public NodePercept(){
+ 
+-    public boolean isSolved() {
+-        return isSolved;
+     }
+ 
+-    public boolean isVisited() {
+-        return visited;
+-    }
+ 
+-    public boolean isWumpus() {
+-        return wumpus;
+-    }
+ }
+-
+Index: AI_project3/src/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>public class Main {\r\n\r\n        public static void main(String args[]){\r\n            System.out.println(\"hello world\");\r\n\r\n            Grid g4 = new Grid(4);\r\n            g4.printGrid();\r\n            g4.vals();\r\n            Agent a = new Agent();\r\n            a.solve(g4);\r\n/**\r\n            Grid g5 = new Grid(5);\r\n            g5.printGrid();\r\n            g5.vals();\r\n\r\n            Grid g8 = new Grid(8);\r\n            g8.printGrid();\r\n            g8.vals();\r\n\r\n            Grid g10 = new Grid(10);\r\n            g10.printGrid();\r\n            g10.vals();\r\n */\r\n        }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- AI_project3/src/Main.java	(date 1543692499000)
++++ AI_project3/src/Main.java	(date 1543692520451)
+@@ -6,8 +6,6 @@
+             Grid g4 = new Grid(4);
+             g4.printGrid();
+             g4.vals();
+-            Agent a = new Agent();
+-            a.solve(g4);
+ /**
+             Grid g5 = new Grid(5);
+             g5.printGrid();
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" default=\"true\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(date 1543692499000)
++++ .idea/misc.xml	(date 1543692520495)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_10" default="false" project-jdk-name="11" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"258a180c-d826-4f96-b886-1dd20f460d32\" name=\"Default Changelist\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Grid.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Grid.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Main.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Main.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Node.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Node.java\" afterDir=\"false\" />\r\n    </list>\r\n    <ignored path=\"$PROJECT_DIR$/out/\" />\r\n    <option name=\"EXCLUDED_CONVERTED_TO_IGNORED\" value=\"true\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FUSProjectUsageTrigger\">\r\n    <session id=\"-172876051\">\r\n      <usages-collector id=\"statistics.lifecycle.project\">\r\n        <counts>\r\n          <entry key=\"project.closed\" value=\"1\" />\r\n          <entry key=\"project.open.time.0\" value=\"1\" />\r\n          <entry key=\"project.open.time.3\" value=\"1\" />\r\n          <entry key=\"project.opened\" value=\"2\" />\r\n        </counts>\r\n      </usages-collector>\r\n      <usages-collector id=\"statistics.file.extensions.open\">\r\n        <counts>\r\n          <entry key=\"java\" value=\"3\" />\r\n        </counts>\r\n      </usages-collector>\r\n      <usages-collector id=\"statistics.file.types.open\">\r\n        <counts>\r\n          <entry key=\"JAVA\" value=\"3\" />\r\n        </counts>\r\n      </usages-collector>\r\n      <usages-collector id=\"statistics.file.extensions.edit\">\r\n        <counts>\r\n          <entry key=\"java\" value=\"1840\" />\r\n        </counts>\r\n      </usages-collector>\r\n      <usages-collector id=\"statistics.file.types.edit\">\r\n        <counts>\r\n          <entry key=\"JAVA\" value=\"1840\" />\r\n        </counts>\r\n      </usages-collector>\r\n    </session>\r\n  </component>\r\n  <component name=\"FileEditorManager\">\r\n    <leaf>\r\n      <file pinned=\"false\" current-in-tab=\"false\">\r\n        <entry file=\"file://$PROJECT_DIR$/src/Main.java\">\r\n          <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n            <state relative-caret-position=\"340\">\r\n              <caret line=\"20\" column=\"3\" selection-start-line=\"20\" selection-start-column=\"3\" selection-end-line=\"20\" selection-end-column=\"3\" />\r\n            </state>\r\n          </provider>\r\n        </entry>\r\n      </file>\r\n      <file pinned=\"false\" current-in-tab=\"true\">\r\n        <entry file=\"file://$PROJECT_DIR$/src/Grid.java\">\r\n          <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n            <state relative-caret-position=\"233\">\r\n              <caret line=\"87\" column=\"25\" selection-start-line=\"87\" selection-start-column=\"25\" selection-end-line=\"87\" selection-end-column=\"25\" />\r\n              <folding>\r\n                <element signature=\"e#3527#3528#0\" expanded=\"true\" />\r\n                <element signature=\"e#3560#3561#0\" expanded=\"true\" />\r\n                <element signature=\"e#3606#3607#0\" expanded=\"true\" />\r\n                <element signature=\"e#3639#3640#0\" expanded=\"true\" />\r\n              </folding>\r\n            </state>\r\n          </provider>\r\n        </entry>\r\n      </file>\r\n      <file pinned=\"false\" current-in-tab=\"false\">\r\n        <entry file=\"file://$PROJECT_DIR$/src/Node.java\">\r\n          <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n            <state relative-caret-position=\"88\">\r\n              <caret line=\"21\" column=\"25\" lean-forward=\"true\" selection-start-line=\"21\" selection-start-column=\"25\" selection-end-line=\"21\" selection-end-column=\"25\" />\r\n            </state>\r\n          </provider>\r\n        </entry>\r\n      </file>\r\n    </leaf>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"ROOT_SYNC\" value=\"DONT_SYNC\" />\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"IdeDocumentHistory\">\r\n    <option name=\"CHANGED_PATHS\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/src/Node.java\" />\r\n        <option value=\"$PROJECT_DIR$/src/Main.java\" />\r\n        <option value=\"$PROJECT_DIR$/src/Grid.java\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectFrameBounds\">\r\n    <option name=\"x\" value=\"953\" />\r\n    <option name=\"width\" value=\"974\" />\r\n    <option name=\"height\" value=\"1047\" />\r\n  </component>\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectView\">\r\n    <navigator proportions=\"\" version=\"1\">\r\n      <foldersAlwaysOnTop value=\"true\" />\r\n    </navigator>\r\n    <panes>\r\n      <pane id=\"ProjectPane\">\r\n        <subPane>\r\n          <expand>\r\n            <path>\r\n              <item name=\"AI_project3\" type=\"b2602c69:ProjectViewProjectNode\" />\r\n              <item name=\"AI_project3\" type=\"462c0819:PsiDirectoryNode\" />\r\n            </path>\r\n            <path>\r\n              <item name=\"AI_project3\" type=\"b2602c69:ProjectViewProjectNode\" />\r\n              <item name=\"AI_project3\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"src\" type=\"462c0819:PsiDirectoryNode\" />\r\n            </path>\r\n          </expand>\r\n          <select />\r\n        </subPane>\r\n      </pane>\r\n      <pane id=\"PackagesPane\" />\r\n      <pane id=\"Scope\" />\r\n    </panes>\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp\" value=\"1543364179070\" />\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$\" />\r\n    <property name=\"settings.editor.selected.configurable\" value=\"vcs.Git\" />\r\n  </component>\r\n  <component name=\"RunDashboard\">\r\n    <option name=\"ruleStates\">\r\n      <list>\r\n        <RuleState>\r\n          <option name=\"name\" value=\"ConfigurationTypeDashboardGroupingRule\" />\r\n        </RuleState>\r\n        <RuleState>\r\n          <option name=\"name\" value=\"StatusDashboardGroupingRule\" />\r\n        </RuleState>\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"Main\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"Main\" />\r\n      <module name=\"AI_project31\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration default=\"true\" type=\"Application\" factoryName=\"Application\">\r\n      <module name=\"AI_project31\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.Main\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SvnConfiguration\">\r\n    <configuration />\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"258a180c-d826-4f96-b886-1dd20f460d32\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1542387120946</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1542387120946</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"ToolWindowManager\">\r\n    <frame x=\"953\" y=\"0\" width=\"974\" height=\"1047\" extended-state=\"0\" />\r\n    <editor active=\"true\" />\r\n    <layout>\r\n      <window_info content_ui=\"combo\" id=\"Project\" order=\"0\" visible=\"true\" weight=\"0.0\" />\r\n      <window_info id=\"Structure\" order=\"1\" side_tool=\"true\" weight=\"0.25\" />\r\n      <window_info id=\"Image Layers\" order=\"2\" />\r\n      <window_info id=\"Designer\" order=\"3\" />\r\n      <window_info id=\"UI Designer\" order=\"4\" />\r\n      <window_info id=\"Capture Tool\" order=\"5\" />\r\n      <window_info id=\"Favorites\" order=\"6\" side_tool=\"true\" />\r\n      <window_info anchor=\"bottom\" id=\"Message\" order=\"0\" />\r\n      <window_info anchor=\"bottom\" id=\"Find\" order=\"1\" />\r\n      <window_info active=\"true\" anchor=\"bottom\" id=\"Run\" order=\"2\" visible=\"true\" weight=\"0.28258488\" />\r\n      <window_info anchor=\"bottom\" id=\"Debug\" order=\"3\" weight=\"0.4\" />\r\n      <window_info anchor=\"bottom\" id=\"Cvs\" order=\"4\" weight=\"0.25\" />\r\n      <window_info anchor=\"bottom\" id=\"Inspection\" order=\"5\" weight=\"0.4\" />\r\n      <window_info anchor=\"bottom\" id=\"TODO\" order=\"6\" />\r\n      <window_info anchor=\"bottom\" id=\"Terminal\" order=\"7\" weight=\"0.32092005\" />\r\n      <window_info anchor=\"bottom\" id=\"Event Log\" order=\"8\" side_tool=\"true\" />\r\n      <window_info anchor=\"bottom\" id=\"Version Control\" order=\"9\" show_stripe_button=\"false\" />\r\n      <window_info anchor=\"bottom\" id=\"Messages\" order=\"10\" weight=\"0.32968238\" />\r\n      <window_info anchor=\"right\" id=\"Commander\" internal_type=\"SLIDING\" order=\"0\" type=\"SLIDING\" weight=\"0.4\" />\r\n      <window_info anchor=\"right\" id=\"Ant Build\" order=\"1\" weight=\"0.25\" />\r\n      <window_info anchor=\"right\" content_ui=\"combo\" id=\"Hierarchy\" order=\"2\" weight=\"0.25\" />\r\n      <window_info anchor=\"right\" id=\"Palette\" order=\"3\" />\r\n      <window_info anchor=\"right\" id=\"Capture Analysis\" order=\"4\" />\r\n      <window_info anchor=\"right\" id=\"Theme Preview\" order=\"5\" />\r\n      <window_info anchor=\"right\" id=\"Palette&#9;\" order=\"6\" />\r\n      <window_info anchor=\"right\" id=\"Maven Projects\" order=\"7\" />\r\n    </layout>\r\n  </component>\r\n  <component name=\"VcsContentAnnotationSettings\">\r\n    <option name=\"myLimit\" value=\"2678400000\" />\r\n  </component>\r\n  <component name=\"editorHistoryManager\">\r\n    <entry file=\"file://$PROJECT_DIR$/src/Node.java\">\r\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n        <state relative-caret-position=\"88\">\r\n          <caret line=\"21\" column=\"25\" lean-forward=\"true\" selection-start-line=\"21\" selection-start-column=\"25\" selection-end-line=\"21\" selection-end-column=\"25\" />\r\n        </state>\r\n      </provider>\r\n    </entry>\r\n    <entry file=\"file://$PROJECT_DIR$/src/Main.java\">\r\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n        <state relative-caret-position=\"340\">\r\n          <caret line=\"20\" column=\"3\" selection-start-line=\"20\" selection-start-column=\"3\" selection-end-line=\"20\" selection-end-column=\"3\" />\r\n        </state>\r\n      </provider>\r\n    </entry>\r\n    <entry file=\"file://$PROJECT_DIR$/src/Grid.java\">\r\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n        <state relative-caret-position=\"233\">\r\n          <caret line=\"87\" column=\"25\" selection-start-line=\"87\" selection-start-column=\"25\" selection-end-line=\"87\" selection-end-column=\"25\" />\r\n          <folding>\r\n            <element signature=\"e#3527#3528#0\" expanded=\"true\" />\r\n            <element signature=\"e#3560#3561#0\" expanded=\"true\" />\r\n            <element signature=\"e#3606#3607#0\" expanded=\"true\" />\r\n            <element signature=\"e#3639#3640#0\" expanded=\"true\" />\r\n          </folding>\r\n        </state>\r\n      </provider>\r\n    </entry>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/workspace.xml	(date 1543692499000)
++++ .idea/workspace.xml	(date 1543694760692)
+@@ -1,11 +1,13 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ChangeListManager">
+-    <list default="true" id="258a180c-d826-4f96-b886-1dd20f460d32" name="Default Changelist" comment="">
++    <list default="true" id="2c18ef92-35bc-405c-bfac-367eb750342e" name="Default Changelist" comment="">
++      <change beforePath="$PROJECT_DIR$/.idea/AI_project3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/AI_project3.iml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Grid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Grid.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/AI_project3/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/AI_project3/src/Main.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/AI_project3/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/AI_project3/src/Node.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/AI_project3/src/NodePercept.java" beforeDir="false" afterPath="$PROJECT_DIR$/AI_project3/src/NodePercept.java" afterDir="false" />
+     </list>
+     <ignored path="$PROJECT_DIR$/out/" />
+     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+@@ -42,41 +44,84 @@
+       <usages-collector id="statistics.file.types.edit">
+         <counts>
+           <entry key="JAVA" value="1840" />
++        </counts>
++      </usages-collector>
++    </session>
++    <session id="-492714880">
++      <usages-collector id="statistics.file.extensions.open">
++        <counts>
++          <entry key="java" value="3" />
++        </counts>
++      </usages-collector>
++      <usages-collector id="statistics.file.types.open">
++        <counts>
++          <entry key="JAVA" value="3" />
+         </counts>
+       </usages-collector>
+     </session>
+   </component>
+   <component name="FileEditorManager">
+-    <leaf>
++    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+       <file pinned="false" current-in-tab="false">
+-        <entry file="file://$PROJECT_DIR$/src/Main.java">
++        <entry file="file://$PROJECT_DIR$/AI_project3/src/Grid.java">
+           <provider selected="true" editor-type-id="text-editor">
+-            <state relative-caret-position="340">
+-              <caret line="20" column="3" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
+-            </state>
++            <state relative-caret-position="-2150" />
+           </provider>
++        </entry>
++      </file>
++      <file pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/AI_project3/src/Main.java">
++          <provider selected="true" editor-type-id="text-editor" />
++        </entry>
++      </file>
++      <file pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/AI_project3/src/Node.java">
++          <provider selected="true" editor-type-id="text-editor" />
++        </entry>
++      </file>
++      <file pinned="false" current-in-tab="false">
++        <entry file="file://$PROJECT_DIR$/AI_project3/src/NodePercept.java">
++          <provider selected="true" editor-type-id="text-editor" />
+         </entry>
+       </file>
+       <file pinned="false" current-in-tab="true">
+-        <entry file="file://$PROJECT_DIR$/src/Grid.java">
++        <entry file="file://$PROJECT_DIR$/AI_project3/src/Agent.java">
+           <provider selected="true" editor-type-id="text-editor">
+-            <state relative-caret-position="233">
+-              <caret line="87" column="25" selection-start-line="87" selection-start-column="25" selection-end-line="87" selection-end-column="25" />
++            <state relative-caret-position="404">
++              <caret line="147" column="11" lean-forward="true" selection-start-line="147" selection-start-column="11" selection-end-line="147" selection-end-column="11" />
+               <folding>
+-                <element signature="e#3527#3528#0" expanded="true" />
+-                <element signature="e#3560#3561#0" expanded="true" />
+-                <element signature="e#3606#3607#0" expanded="true" />
+-                <element signature="e#3639#3640#0" expanded="true" />
++                <element signature="e#912#913#0" expanded="true" />
++                <element signature="e#940#941#0" expanded="true" />
++                <element signature="e#971#972#0" expanded="true" />
++                <element signature="e#1000#1001#0" expanded="true" />
++                <element signature="e#1036#1037#0" expanded="true" />
++                <element signature="e#1068#1069#0" expanded="true" />
++                <element signature="e#1097#1098#0" expanded="true" />
++                <element signature="e#1125#1126#0" expanded="true" />
++                <element signature="e#1161#1162#0" expanded="true" />
++                <element signature="e#1193#1194#0" expanded="true" />
++                <element signature="e#1255#1256#0" expanded="true" />
++                <element signature="e#1289#1290#0" expanded="true" />
++                <element signature="e#1330#1331#0" expanded="true" />
++                <element signature="e#1359#1360#0" expanded="true" />
++                <element signature="e#1409#1410#0" expanded="true" />
++                <element signature="e#1451#1452#0" expanded="true" />
++                <element signature="e#1502#1503#0" expanded="true" />
++                <element signature="e#1544#1545#0" expanded="true" />
++                <element signature="e#1583#1584#0" expanded="true" />
++                <element signature="e#1617#1618#0" expanded="true" />
++                <element signature="e#1659#1660#0" expanded="true" />
++                <element signature="e#1688#1689#0" expanded="true" />
+               </folding>
+             </state>
+           </provider>
+         </entry>
+       </file>
+       <file pinned="false" current-in-tab="false">
+-        <entry file="file://$PROJECT_DIR$/src/Node.java">
++        <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+           <provider selected="true" editor-type-id="text-editor">
+-            <state relative-caret-position="88">
+-              <caret line="21" column="25" lean-forward="true" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
++            <state relative-caret-position="102">
++              <caret line="6" column="60" selection-start-line="6" selection-start-column="60" selection-end-line="6" selection-end-column="60" />
+             </state>
+           </provider>
+         </entry>
+@@ -84,6 +129,7 @@
+     </leaf>
+   </component>
+   <component name="Git.Settings">
++    <option name="UPDATE_CHANGES_POLICY" value="SHELVE" />
+     <option name="ROOT_SYNC" value="DONT_SYNC" />
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+@@ -107,6 +153,7 @@
+       <foldersAlwaysOnTop value="true" />
+     </navigator>
+     <panes>
++      <pane id="PackagesPane" />
+       <pane id="ProjectPane">
+         <subPane>
+           <expand>
+@@ -123,7 +170,6 @@
+           <select />
+         </subPane>
+       </pane>
+-      <pane id="PackagesPane" />
+       <pane id="Scope" />
+     </panes>
+   </component>
+@@ -131,6 +177,123 @@
+     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543364179070" />
+     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+     <property name="settings.editor.selected.configurable" value="vcs.Git" />
++  </component>
++  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
++    <UpdatedFiles>
++      <FILE-GROUP>
++        <option name="myUpdateName" value="Updated from server" />
++        <option name="myStatusName" value="Changed on server" />
++        <option name="mySupportsDeletion" value="false" />
++        <option name="myCanBeAbsent" value="false" />
++        <option name="myId" value="CHANGED_ON_SERVER" />
++        <FILE-GROUP>
++          <option name="myUpdateName" value="Updated" />
++          <option name="myStatusName" value="Changed" />
++          <option name="mySupportsDeletion" value="false" />
++          <option name="myCanBeAbsent" value="false" />
++          <option name="myId" value="UPDATED" />
++          <PATH vcs="Git" revision="">$PROJECT_DIR$/AI_project3/src/Agent.java</PATH>
++          <PATH vcs="Git" revision="">$PROJECT_DIR$/AI_project3/src/Grid.java</PATH>
++          <PATH vcs="Git" revision="">$PROJECT_DIR$/AI_project3/src/Node.java</PATH>
++        </FILE-GROUP>
++        <FILE-GROUP>
++          <option name="myUpdateName" value="Created" />
++          <option name="myStatusName" value="Created" />
++          <option name="mySupportsDeletion" value="false" />
++          <option name="myCanBeAbsent" value="false" />
++          <option name="myId" value="CREATED" />
++          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/AI_project3/Agent.class</PATH>
++          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/AI_project3/Grid.class</PATH>
++          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/AI_project3/Main.class</PATH>
++          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/AI_project3/Node.class</PATH>
++          <PATH vcs="Git" revision="">$PROJECT_DIR$/out/production/AI_project3/NodePercept.class</PATH>
++        </FILE-GROUP>
++        <FILE-GROUP>
++          <option name="myUpdateName" value="Deleted" />
++          <option name="myStatusName" value="Deleted" />
++          <option name="mySupportsDeletion" value="false" />
++          <option name="myCanBeAbsent" value="true" />
++          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
++        </FILE-GROUP>
++        <FILE-GROUP>
++          <option name="myUpdateName" value="Restored" />
++          <option name="myStatusName" value="Will be restored" />
++          <option name="mySupportsDeletion" value="false" />
++          <option name="myCanBeAbsent" value="false" />
++          <option name="myId" value="RESTORED" />
++        </FILE-GROUP>
++      </FILE-GROUP>
++      <FILE-GROUP>
++        <option name="myUpdateName" value="Modified" />
++        <option name="myStatusName" value="Modified" />
++        <option name="mySupportsDeletion" value="false" />
++        <option name="myCanBeAbsent" value="false" />
++        <option name="myId" value="MODIFIED" />
++      </FILE-GROUP>
++      <FILE-GROUP>
++        <option name="myUpdateName" value="Skipped" />
++        <option name="myStatusName" value="Skipped" />
++        <option name="mySupportsDeletion" value="false" />
++        <option name="myCanBeAbsent" value="false" />
++        <option name="myId" value="SKIPPED" />
++      </FILE-GROUP>
++      <FILE-GROUP>
++        <option name="myUpdateName" value="Merged with conflicts" />
++        <option name="myStatusName" value="Will be merged with conflicts" />
++        <option name="mySupportsDeletion" value="false" />
++        <option name="myCanBeAbsent" value="false" />
++        <option name="myId" value="MERGED_WITH_CONFLICTS" />
++      </FILE-GROUP>
++      <FILE-GROUP>
++        <option name="myUpdateName" value="Merged with tree conflicts" />
++        <option name="myStatusName" value="Merged with tree conflicts" />
++        <option name="mySupportsDeletion" value="false" />
++        <option name="myCanBeAbsent" value="false" />
++        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
++      </FILE-GROUP>
++      <FILE-GROUP>
++        <option name="myUpdateName" value="Merged with property conflicts" />
++        <option name="myStatusName" value="Will be merged with property conflicts" />
++        <option name="mySupportsDeletion" value="false" />
++        <option name="myCanBeAbsent" value="false" />
++        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
++      </FILE-GROUP>
++      <FILE-GROUP>
++        <option name="myUpdateName" value="Merged" />
++        <option name="myStatusName" value="Will be merged" />
++        <option name="mySupportsDeletion" value="false" />
++        <option name="myCanBeAbsent" value="false" />
++        <option name="myId" value="MERGED" />
++      </FILE-GROUP>
++      <FILE-GROUP>
++        <option name="myUpdateName" value="Not in repository" />
++        <option name="myStatusName" value="Not in repository" />
++        <option name="mySupportsDeletion" value="true" />
++        <option name="myCanBeAbsent" value="false" />
++        <option name="myId" value="UNKNOWN" />
++      </FILE-GROUP>
++      <FILE-GROUP>
++        <option name="myUpdateName" value="Locally added" />
++        <option name="myStatusName" value="Locally added" />
++        <option name="mySupportsDeletion" value="false" />
++        <option name="myCanBeAbsent" value="false" />
++        <option name="myId" value="LOCALLY_ADDED" />
++      </FILE-GROUP>
++      <FILE-GROUP>
++        <option name="myUpdateName" value="Locally removed" />
++        <option name="myStatusName" value="Locally removed" />
++        <option name="mySupportsDeletion" value="false" />
++        <option name="myCanBeAbsent" value="false" />
++        <option name="myId" value="LOCALLY_REMOVED" />
++      </FILE-GROUP>
++      <FILE-GROUP>
++        <option name="myUpdateName" value="Switched" />
++        <option name="myStatusName" value="Switched" />
++        <option name="mySupportsDeletion" value="false" />
++        <option name="myCanBeAbsent" value="false" />
++        <option name="myId" value="SWITCHED" />
++      </FILE-GROUP>
++    </UpdatedFiles>
+   </component>
+   <component name="RunDashboard">
+     <option name="ruleStates">
+@@ -178,10 +341,9 @@
+     <servers />
+   </component>
+   <component name="ToolWindowManager">
+-    <frame x="953" y="0" width="974" height="1047" extended-state="0" />
+-    <editor active="true" />
++    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+     <layout>
+-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.0" />
++      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.06716418" />
+       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+       <window_info id="Image Layers" order="2" />
+       <window_info id="Designer" order="3" />
+@@ -196,9 +358,9 @@
+       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+       <window_info anchor="bottom" id="TODO" order="6" />
+       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32092005" />
+-      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
++      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50053304" side_tool="true" weight="0.06724512" />
+       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
+-      <window_info anchor="bottom" id="Messages" order="10" weight="0.32968238" />
++      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.49946696" weight="0.06724512" />
+       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+@@ -213,32 +375,128 @@
+     <option name="myLimit" value="2678400000" />
+   </component>
+   <component name="editorHistoryManager">
+-    <entry file="file://$PROJECT_DIR$/src/Node.java">
++    <entry file="file://$PROJECT_DIR$/src/Node.java" />
++    <entry file="file://$PROJECT_DIR$/src/Main.java" />
++    <entry file="file://$PROJECT_DIR$/src/Grid.java" />
++    <entry file="file://$PROJECT_DIR$/AI_project3/src/Grid.java">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="88">
+-          <caret line="21" column="25" lean-forward="true" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
+-        </state>
++        <state relative-caret-position="-2150" />
+       </provider>
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/Main.java">
+-      <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="340">
+-          <caret line="20" column="3" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
+-        </state>
+-      </provider>
++    <entry file="file://$PROJECT_DIR$/AI_project3/src/Main.java">
++      <provider selected="true" editor-type-id="text-editor" />
++    </entry>
++    <entry file="file://$PROJECT_DIR$/AI_project3/src/Node.java">
++      <provider selected="true" editor-type-id="text-editor" />
++    </entry>
++    <entry file="file://$PROJECT_DIR$/AI_project3/src/NodePercept.java">
++      <provider selected="true" editor-type-id="text-editor" />
+     </entry>
+-    <entry file="file://$PROJECT_DIR$/src/Grid.java">
++    <entry file="file://$PROJECT_DIR$/AI_project3/src/Agent.java">
+       <provider selected="true" editor-type-id="text-editor">
+-        <state relative-caret-position="233">
+-          <caret line="87" column="25" selection-start-line="87" selection-start-column="25" selection-end-line="87" selection-end-column="25" />
++        <state relative-caret-position="404">
++          <caret line="147" column="11" lean-forward="true" selection-start-line="147" selection-start-column="11" selection-end-line="147" selection-end-column="11" />
+           <folding>
+-            <element signature="e#3527#3528#0" expanded="true" />
+-            <element signature="e#3560#3561#0" expanded="true" />
+-            <element signature="e#3606#3607#0" expanded="true" />
+-            <element signature="e#3639#3640#0" expanded="true" />
++            <element signature="e#912#913#0" expanded="true" />
++            <element signature="e#940#941#0" expanded="true" />
++            <element signature="e#971#972#0" expanded="true" />
++            <element signature="e#1000#1001#0" expanded="true" />
++            <element signature="e#1036#1037#0" expanded="true" />
++            <element signature="e#1068#1069#0" expanded="true" />
++            <element signature="e#1097#1098#0" expanded="true" />
++            <element signature="e#1125#1126#0" expanded="true" />
++            <element signature="e#1161#1162#0" expanded="true" />
++            <element signature="e#1193#1194#0" expanded="true" />
++            <element signature="e#1255#1256#0" expanded="true" />
++            <element signature="e#1289#1290#0" expanded="true" />
++            <element signature="e#1330#1331#0" expanded="true" />
++            <element signature="e#1359#1360#0" expanded="true" />
++            <element signature="e#1409#1410#0" expanded="true" />
++            <element signature="e#1451#1452#0" expanded="true" />
++            <element signature="e#1502#1503#0" expanded="true" />
++            <element signature="e#1544#1545#0" expanded="true" />
++            <element signature="e#1583#1584#0" expanded="true" />
++            <element signature="e#1617#1618#0" expanded="true" />
++            <element signature="e#1659#1660#0" expanded="true" />
++            <element signature="e#1688#1689#0" expanded="true" />
+           </folding>
+         </state>
+       </provider>
+     </entry>
+   </component>
++  <component name="masterDetails">
++    <states>
++      <state key="ArtifactsStructureConfigurable.UI">
++        <settings>
++          <artifact-editor />
++          <splitter-proportions>
++            <option name="proportions">
++              <list>
++                <option value="0.2" />
++              </list>
++            </option>
++          </splitter-proportions>
++        </settings>
++      </state>
++      <state key="FacetStructureConfigurable.UI">
++        <settings>
++          <last-edited>No facets are configured</last-edited>
++          <splitter-proportions>
++            <option name="proportions">
++              <list>
++                <option value="0.2" />
++              </list>
++            </option>
++          </splitter-proportions>
++        </settings>
++      </state>
++      <state key="GlobalLibrariesConfigurable.UI">
++        <settings>
++          <splitter-proportions>
++            <option name="proportions">
++              <list>
++                <option value="0.2" />
++              </list>
++            </option>
++          </splitter-proportions>
++        </settings>
++      </state>
++      <state key="JdkListConfigurable.UI">
++        <settings>
++          <last-edited>11</last-edited>
++          <splitter-proportions>
++            <option name="proportions">
++              <list>
++                <option value="0.2" />
++              </list>
++            </option>
++          </splitter-proportions>
++        </settings>
++      </state>
++      <state key="ModuleStructureConfigurable.UI">
++        <settings>
++          <last-edited>AI_project3</last-edited>
++          <splitter-proportions>
++            <option name="proportions">
++              <list>
++                <option value="0.2" />
++                <option value="0.6" />
++              </list>
++            </option>
++          </splitter-proportions>
++        </settings>
++      </state>
++      <state key="ProjectLibrariesConfigurable.UI">
++        <settings>
++          <splitter-proportions>
++            <option name="proportions">
++              <list>
++                <option value="0.2" />
++              </list>
++            </option>
++          </splitter-proportions>
++        </settings>
++      </state>
++    </states>
++  </component>
+ </project>
+\ No newline at end of file
+Index: .idea/AI_project3.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"JAVA_MODULE\" version=\"4\">\r\n  <component name=\"NewModuleRootManager\" inherit-compiler-output=\"true\">\r\n    <exclude-output />\r\n    <content url=\"file://$MODULE_DIR$\" />\r\n    <orderEntry type=\"inheritedJdk\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/AI_project3.iml	(date 1543692499000)
++++ .idea/AI_project3.iml	(date 1543692520620)
+@@ -2,7 +2,9 @@
+ <module type="JAVA_MODULE" version="4">
+   <component name="NewModuleRootManager" inherit-compiler-output="true">
+     <exclude-output />
+-    <content url="file://$MODULE_DIR$" />
++    <content url="file://$MODULE_DIR$">
++      <sourceFolder url="file://$MODULE_DIR$/AI_project3/src" isTestSource="false" />
++    </content>
+     <orderEntry type="inheritedJdk" />
+     <orderEntry type="sourceFolder" forTests="false" />
+   </component>
+Index: AI_project3/src/Node.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/**\r\n *\r\n * @author\r\n * this class represents the locations on the search grid\r\n */\r\n\r\n\r\npublic class Node {\r\n\r\n    private char symbol; //tells what the square contains\r\n    private boolean wumpus;\r\n    private boolean pit;\r\n    private boolean gold;\r\n    private boolean[] sense; // index 0 = stench; 1 = breeze; 2 = glitter\r\n    \r\n\r\n    public Node(){\r\n\r\n        this.symbol = '_';\r\n        this.wumpus = false;\r\n        this.pit = false;\r\n        this.gold = false;\r\n        sense = new boolean[3];\r\n    }\r\n\r\n    //get the symbol\r\n    public char getSymbol() {\r\n        return symbol;\r\n    }\r\n\r\n    public void setSymbol(char symbol) {\r\n        this.symbol = symbol;\r\n    }\r\n\r\n    public void setSense(int index, boolean s)  {\r\n        sense[index] = s;\r\n    }\r\n\r\n    public boolean[] getSense() {\r\n        return sense;\r\n    }\r\n    public void setGold(boolean gold) {\r\n        this.gold = gold;\r\n    }\r\n\r\n    public boolean isGold() {\r\n        return gold;\r\n    }\r\n\r\n    public boolean isPit() {\r\n        return pit;\r\n    }\r\n\r\n    public void setPit(boolean pit) {\r\n        this.pit = pit;\r\n    }\r\n\r\n    public boolean isWumpus() {\r\n        return wumpus;\r\n    }\r\n    \r\n    public void setWumpus(boolean wumpus){\r\n        this.wumpus = wumpus;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- AI_project3/src/Node.java	(date 1543692499000)
++++ AI_project3/src/Node.java	(date 1543692520652)
+@@ -8,6 +8,7 @@
+ public class Node {
+ 
+     private char symbol; //tells what the square contains
++    private boolean solved;
+     private boolean wumpus;
+     private boolean pit;
+     private boolean gold;
+@@ -58,7 +59,6 @@
+     public boolean isWumpus() {
+         return wumpus;
+     }
+-    
+     public void setWumpus(boolean wumpus){
+         this.wumpus = wumpus;
+     }

@@ -24,13 +24,25 @@ public class Main {
 
 
 
+
+
            // System.out.println(g4.getGrid().length);
             //System.out.println(g4.getGrid()[1][1].getX() + " " + g4.getGrid()[1][1].getY());
 
 
             //System.out.println(a.return_adjacent(1,1));
 
-           a.explore_safe(g4);
+
+
+
+           a.explore_safe(g4, 1, 1);
+           int val2 = a.return_frontier().size();
+           ArrayList<NodePercept> frontier = a.return_frontier();
+           for(int i = 0; i < val2; i++)
+           {
+               System.out.print(" " + frontier.get(i).getY() + frontier.get(i).getX());
+
+           }
 
            //System.out.println(a.safe_space());
 

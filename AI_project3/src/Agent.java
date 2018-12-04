@@ -69,8 +69,8 @@ public class Agent {
     public void solve(Grid g){
 
          setupPreceptsGrid(g.getGrid()[0].length);
-         Node current = g.getNode(1,1);
-         while(!isDead || !(foundGold && current == g.getNode(1,1))){
+         current = memory[1][1];
+         while(!isDead || !(foundGold && current == memory[1][1])){
              //do moving stuff
 
              if(current.isPit()){
@@ -259,7 +259,7 @@ public class Agent {
                 ArrayList<NodePercept> adjacent = return_adjacent(current.getY(), current.getX());
                 for(int i = 0; i < adjacent.size(); i++)
                 {
-                    if(adjacent.get(i).isWall() == false && adjacent.get(i).isPit() ==false && adjacent.get(i).isWumpus() == false)
+                    if(adjacent.get(i).isWall() == false && adjacent.get(i).isPit() == false && adjacent.get(i).isWumpus() == false)
                     {
                         adjacent.get(i).setSafe(true);
                     }
@@ -268,13 +268,13 @@ public class Agent {
 
 
 
-    public void explore_safe(Grid grid)
+    public void explore_safe(Grid grid, int y, int x)
     {
-
+        frontier = new ArrayList<NodePercept>();
         Stack<NodePercept> node_stack = new Stack();
-        node_stack.push(memory[1][1]);
-        memory[1][1].setSafe(true);
-        memory[1][1].setVisited(true);
+        node_stack.push(memory[y][x]);
+        memory[y][x].setSafe(true);
+        memory[y][x].setVisited(true);
         do  {
             printMemory();
             NodePercept peek = node_stack.peek();
@@ -282,20 +282,25 @@ public class Agent {
             peek.setVisited(true);
             //System.out.println("current vals:" + " " + peek.getY() + " "  + peek.getX());
             update_memory(peek, grid, peek.getY(), peek.getX());
-            NodePercept val = get_move(peek.getY(), peek.getX(), grid); //gets the next move value
+            NodePercept val = get_move(peek.getY(), peek.getX(), grid);
+            if(grid.getGrid()[current.getY()][current.getX()].isGold() == true)
+            {
+                foundGold = true;
+                score+=1000;
+                System.out.println("WE EATING " + score);
+                break;
+            }
             if (val != null) {
                 node_stack.push(val);
                 score--;
                 System.out.println("If:" +  val.getX() + val.getY());
             } else {
-//                frontier.add(current); //frontier of possible not-safe spaces
+                frontier.add(current); //frontier of possible not-safe spaces
                 node_stack.pop();
                 System.out.println("else");
                 score--;
             }
         }while(safe_space() == true);
-
-
         System.out.println(current.getY() + " " + current.getX());
     }
 
@@ -308,18 +313,22 @@ public class Agent {
     {
         if((memory[y+1][x].is_safe() == true) && memory[y+1][x].isVisited() == false && memory[y+1][x].isWall() == false) {
             memory[y][x].setVisited(true);
+            direction = "north";
             return memory[y+1][x];
         }
         else if((memory[y][x +1].is_safe() == true) && memory[y][x +1].isVisited()==false && memory[y+1][x].isWall() == false){
             memory[y][x].setVisited(true);
+            direction = "east";
             return memory[y][x+1];
         }
         else if((memory[y][x -1].is_safe() == true) && memory[y][x-1].isVisited()==false && memory[y+1][x].isWall() == false){
             memory[y][x].setVisited(true);
+            direction = "west";
             return memory[y][x-1];
         }
         else if((memory[y-1][x].is_safe() == true) && memory[y-1][x].isVisited()==false && memory[y+1][x].isWall() == false){
             memory[y][x].setVisited(true);
+            direction = "south";
             return memory[y-1][x];
         }
         else{
@@ -368,7 +377,7 @@ public class Agent {
           }
     }
 
-    public boolean shoot(Grid g, Node current){
+    public boolean shoot(Grid g){
         boolean wLife = g.isWumpusLife();
         Node[][] grid = g.getGrid();
 
@@ -408,6 +417,7 @@ public class Agent {
                 }
             }
             arrow = false;
+            score -= 10;
 
             //else dont change wumpusLife
         }
@@ -489,12 +499,78 @@ public class Agent {
 //
 //
 //    }
-     public int move_path(Node node1, Node node2)
-    {
 
-        return 0; 
+
+    public void set_current(NodePercept current)
+    {
+        this.current = current;
     }
 
+//     public int move_path(NodePercept here, NodePercept going_to)
+//    {
+//        int count = 0;
+//        //up
+//        if(here.getY() > going_to.getY())
+//        {
+//            count += (here.getY() - going_to.getY());
+//        }
+//
+//        //down
+//        if(here.getY() < going_to.getY())
+//        {
+//            count += (going_to.getY() - here.getY());
+//        }
+//
+//        //left
+//        if(here.getX() > going_to.getX())
+//        {
+//            count += (here.getX() - going_to.getY());
+//        }
+//
+//        //right
+//        if(here.getX() < going_to.getX())
+//        {
+//            count += (going_to.getY() - here.getY());
+//        }
+//
+//        score += count;
+//        return count;//don't actually need at the moment.
+//    }
+
+    public ArrayList<NodePercept> return_frontier()
+    {
+        return frontier;
+    }
+    public void deal_with_wumpus(Grid g){
+        //go thru frontier to find the square with the wumpus
+        NodePercept wumpus = frontier.get(0);
+        for(int i = 0; i < frontier.size(); i++){
+            if(frontier.get(i).isWumpus()){
+                wumpus = frontier.get(i);
+                break;
+            }
+        }
+        NodePercept moveTo;
+        ArrayList<NodePercept> adj = return_adjacent(wumpus.getX(), wumpus.getY());
+        //check adjacent squares for safety; take first safe option
+        for( int i = 0; i < adj.size(); i ++){
+            if(adj.get(i).is_safe()){
+                moveTo = adj.get(i);
+                break;
+            }
+        }
+        //call move_to on current square and square selected above
+
+        //set the direction based off of relationship to new square & wumpus square
+
+        //set wumpus status
+        g.setWumpusLife(shoot(g));
+
+        //if( !g.isWumpusLife())
+            //set all nodeprecepts wumpus = false
+        //else
+            //set all nodeprecepts wumpus = false in current direction
+    }
 }
 
 //if gold take and bounce

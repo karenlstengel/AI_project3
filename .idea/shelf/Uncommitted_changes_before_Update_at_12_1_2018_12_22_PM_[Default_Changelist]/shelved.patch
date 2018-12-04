@@ -1,0 +1,854 @@
+Index: AI_project3/src/Grid.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- AI_project3/src/Grid.java	(date 1543614851631)
++++ AI_project3/src/Grid.java	(date 1543614851631)
+@@ -0,0 +1,158 @@
++import java.util.Random;
++
++/**
++ * @author
++ * this class manages the grid which the user will explore
++ * the grid is filled with nodes
++ *
++ */
++
++public class Grid {
++
++    private Node[][] grid;
++    private boolean wumpusLife;      // keeps track of whether the wumpus lives or not
++
++    public Grid(int dim){
++        grid = new Node[dim][dim];
++
++        for(int i = 0; i < dim; i++){
++            for(int j = 0; j <dim; j++){
++                grid[i][j] = new Node();
++            }
++        }
++        placeObstacles();
++        setSenses();
++    }
++
++
++    public void placeObstacles() {
++        grid[0][0].setSymbol('A');
++        Random rand = new Random();
++        //nothing can be placed in 0,0 since that is where the user will start.
++        int x = rand.nextInt(grid.length);
++        int y = rand.nextInt(grid.length);
++
++        //place gold randomly
++        grid[x][y].setGold(true);
++        grid[x][y].setSymbol('G');
++
++        //place WUMPUS randomly
++        x = rand.nextInt(grid.length);
++        y = rand.nextInt(grid.length);
++
++        while ((x == 0 && y == 0)) {
++            //cant place wumpus on agent
++            x = rand.nextInt(grid.length);
++            y = rand.nextInt(grid.length);
++        }
++        grid[x][y].setWumpus(true);
++        grid[x][y].setSymbol('W');
++
++        //place pits w/ 20% on any empty square
++        Random rand2 = new Random();
++
++        for (int i = 0; i < grid.length; i++) {
++            for (int j = 0; j < grid[0].length; j++) {
++                if (!(i == 0 && j == 0) && !grid[i][j].isGold()) {
++                    //cant place pits on traveller or gold
++                    boolean pit = rand2.nextInt(5) == 0;
++                    grid[i][j].setPit(pit);
++
++                    if (grid[i][j].isPit()) {
++                        grid[i][j].setSymbol('P');
++                    }
++
++                }
++            }
++
++        }
++    }
++
++    public void setSenses(){
++        // index 0 = stench; 1 = breeze; 2 = glitter; 3 = bump
++
++        //set boundaries
++        for(int i = 0; i < grid.length; i++){
++            for(int j = 0; j <grid[0].length; j++){
++                System.out.println(i + " " + j);
++                if(i == 0 || j == 0 || i == grid.length - 1|| j == grid.length - 1){
++                    // edge of the graph. set the boundary
++                    grid[i][j].setSense(3, true);
++                }
++
++                if(grid[i][j].isWumpus()){
++                    if(i == 0 || i == grid.length- 1){
++                        grid[i][j-1].setSense(0, true);
++                        grid[i][j+1].setSense(0, true);
++                    }
++                    else if(j == 0 || j == grid.length - 1){
++                        grid[i-1][j].setSense(0, true);
++                        grid[i+1][j].setSense(0, true);
++                    }
++                    else{
++                        grid[i][j-1].setSense(0, true);
++                        grid[i][j+1].setSense(0, true);
++                        grid[i-1][j].setSense(0, true);
++                        grid[i+1][j].setSense(0, true);
++                    }
++                }
++
++                if(grid[i][j].isPit()){
++                    if(i == 0 || i == grid.length - 1){
++                        grid[i][j-1].setSense(1, true);
++                        grid[i][j+1].setSense(1, true);
++                    }
++                    else if(j == 0 || j == grid.length - 1){
++                        grid[i-1][j].setSense(1, true);
++                        grid[i+1][j].setSense(1, true);
++                    }
++                    else{
++                        grid[i][j-1].setSense(1, true);
++                        grid[i][j+1].setSense(1, true);
++                        grid[i-1][j].setSense(1, true);
++                        grid[i+1][j].setSense(1, true);
++                    }
++                }
++                if(grid[i][j].isGold()){
++                    grid[i][j].setSense(2, true);
++                }
++            }
++        }
++    }
++
++    public void printGrid(){
++        for(int i = 0; i < grid.length; i++){
++            for(int j = 0; j < grid[0].length; j++){
++                System.out.print(grid[i][j].getSymbol());
++            }
++            System.out.println();
++        }
++    }
++
++    public void vals(){
++        /**
++        for(int i = 0; i < grid.length; i++){
++            for(int j = 0; j < grid[0].length; j++) {
++                System.out.println("Gold: " + grid[i][j].isGold() + ", WUMPUS: " + grid[i][j].isWumpus() + ", Pit: " + grid[i][j].isPit());
++            }
++            System.out.println();
++        } */
++
++        // index 0 = stench; 1 = breeze; 2 = glitter; 3 = bump
++        for(int i = 0; i < grid.length; i++){
++            for(int j = 0; j < grid[0].length; j++) {
++                boolean[] sense = grid[i][j].getSense();
++                System.out.println("Stench: " + sense[0] + ", breeze: " + sense[1] + ", glitter: " + sense[2] + ", bump: " + sense[3]);
++            }
++            System.out.println();
++        }
++    }
++
++    public boolean isWumpusLife(){
++        return wumpusLife;
++    }
++
++    public void setWumpusLife(boolean life){
++        wumpusLife = life;
++    }
++}
+Index: AI_project3/src/NodePercept.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- AI_project3/src/NodePercept.java	(date 1543614851639)
++++ AI_project3/src/NodePercept.java	(date 1543614851639)
+@@ -0,0 +1,17 @@
++/**
++ * this class is what the agent understands.
++ */
++
++public class NodePercept {
++
++    // should always be 0<= x <= 1.0
++    private boolean wumpus = false;
++    private boolean pit = false;
++    private boolean gold = false;
++
++    public NodePercept(){
++
++    }
++
++
++}
+Index: AI_project3/src/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- AI_project3/src/Main.java	(date 1543614851633)
++++ AI_project3/src/Main.java	(date 1543614851633)
+@@ -0,0 +1,24 @@
++public class Main {
++
++        public static void main(String args[]){
++            System.out.println("hello world");
++
++            Grid g4 = new Grid(4);
++            g4.printGrid();
++            g4.vals();
++/**
++            Grid g5 = new Grid(5);
++            g5.printGrid();
++            g5.vals();
++
++            Grid g8 = new Grid(8);
++            g8.printGrid();
++            g8.vals();
++
++            Grid g10 = new Grid(10);
++            g10.printGrid();
++            g10.vals();
++ */
++        }
++
++}
+Index: AI_project3/AI_project3.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- AI_project3/AI_project3.iml	(date 1543614851623)
++++ AI_project3/AI_project3.iml	(date 1543614851623)
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="JAVA_MODULE" version="4">
++  <component name="NewModuleRootManager" inherit-compiler-output="true">
++    <exclude-output />
++    <content url="file://$MODULE_DIR$">
++      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
++    </content>
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++</module>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(date 1543615011361)
++++ .idea/misc.xml	(date 1543615011361)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_10" default="false" project-jdk-name="11" project-jdk-type="JavaSDK">
++    <output url="file://$PROJECT_DIR$/out" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/vcs.xml	(date 1543614851617)
++++ .idea/vcs.xml	(date 1543614851617)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: AI_project3/src/Node.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- AI_project3/src/Node.java	(date 1543614851636)
++++ AI_project3/src/Node.java	(date 1543614851636)
+@@ -0,0 +1,66 @@
++/**
++ *
++ * @author
++ * this class represents the locations on the search grid
++ */
++
++
++public class Node {
++
++    private char symbol; //tells what the square contains
++    private boolean solved;
++    private boolean wumpus;
++    private boolean pit;
++    private boolean gold;
++    private boolean[] sense; // index 0 = stench; 1 = breeze; 2 = glitter; 3 = bump
++    
++
++    public Node(){
++
++        this.symbol = '_';
++        this.wumpus = false;
++        this.pit = false;
++        this.gold = false;
++        sense = new boolean[4];
++    }
++
++    //get the symbol
++    public char getSymbol() {
++        return symbol;
++    }
++
++    public void setSymbol(char symbol) {
++        this.symbol = symbol;
++    }
++
++    public void setSense(int index, boolean s)  {
++        sense[index] = s;
++    }
++
++    public boolean[] getSense() {
++        return sense;
++    }
++    public void setGold(boolean gold) {
++        this.gold = gold;
++    }
++
++    public boolean isGold() {
++        return gold;
++    }
++
++    public boolean isPit() {
++        return pit;
++    }
++
++    public void setPit(boolean pit) {
++        this.pit = pit;
++    }
++
++    public boolean isWumpus() {
++        return wumpus;
++    }
++    public void setWumpus(boolean wumpus){
++        this.wumpus = wumpus;
++    }
++
++}
+Index: src/Node.java
+===================================================================
+--- src/Node.java	(date 1543614838000)
++++ src/Node.java	(date 1543614838000)
+@@ -1,26 +0,0 @@
+-/**
+- *
+- * @author
+- * this class represents the locations on the search grid
+- */
+-
+-
+-public class Node {
+-
+-    private char symbol; //tells what the square contains
+-
+-    public Node(){
+-           this.symbol = ' ';
+-    }
+-
+-    //set the symbol
+-    public void setSymbol(char symbol) {
+-        this.symbol = symbol;
+-    }
+-
+-
+-    //get the symbol
+-    public char getSymbol() {
+-        return symbol;
+-    }
+-}
+Index: src/Grid.java
+===================================================================
+--- src/Grid.java	(date 1543614838000)
++++ src/Grid.java	(date 1543614838000)
+@@ -1,47 +0,0 @@
+-import java.util.Random;
+-
+-/**
+- * @author
+- * this class manages the grid which the user will explore
+- * the grid is filled with nodes
+- *
+- */
+-
+-public class Grid {
+-
+-    private Node[][] grid;
+-
+-    public Grid(int dim){
+-        grid = new Node[dim][dim];
+-
+-        for(int i = 0; i < dim; i++){
+-            for(int j = 0; j <dim; j++){
+-                grid[i][j] = new Node();
+-            }
+-        }
+-        placeObstacles();
+-    }
+-
+-
+-    public void placeObstacles(){
+-
+-        Random rand = new Random();
+-        //nothing can be placed in 0,0 since that is where the user will start.
+-        int x = rand.nextInt(grid.length) + 1;
+-        int y = rand.nextInt(grid.length) + 1;
+-
+-        //place gold randomly
+-
+-        //place WUMPUS randomly
+-
+-        //place pits w/ 20% on any empty square
+-    }
+-
+-    public void printGrid(){
+-        for(int i = 0; i < grid.length; i++){
+-            for(int j = 0; j < grid[0].length; j++){
+-                System.out.println(grid[i][j]);
+-            }
+-        }
+-    }
+-}
+Index: src/Main.java
+===================================================================
+--- src/Main.java	(date 1543614838000)
++++ src/Main.java	(date 1543614838000)
+@@ -1,7 +0,0 @@
+-public class Main {
+-
+-        public static void main(String args[]){
+-            System.out.println("hello world");
+-        }
+-
+-}
+Index: AI_project31.iml
+===================================================================
+--- AI_project31.iml	(date 1543614838000)
++++ AI_project3.iml	(date 1543614851719)
+Index: src/Agent.java
+===================================================================
+--- src/Agent.java	(date 1543614838000)
++++ AI_project3/src/Agent.java	(date 1543614851712)
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"2c18ef92-35bc-405c-bfac-367eb750342e\" name=\"Default Changelist\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/vcs.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Main.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Main.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Node.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Node.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"EXCLUDED_CONVERTED_TO_IGNORED\" value=\"true\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FUSProjectUsageTrigger\">\r\n    <session id=\"-492714880\">\r\n      <usages-collector id=\"statistics.lifecycle.project\">\r\n        <counts>\r\n          <entry key=\"project.closed\" value=\"1\" />\r\n          <entry key=\"project.open.time.2\" value=\"1\" />\r\n          <entry key=\"project.opened\" value=\"1\" />\r\n        </counts>\r\n      </usages-collector>\r\n      <usages-collector id=\"statistics.file.extensions.open\">\r\n        <counts>\r\n          <entry key=\"java\" value=\"4\" />\r\n        </counts>\r\n      </usages-collector>\r\n      <usages-collector id=\"statistics.file.types.open\">\r\n        <counts>\r\n          <entry key=\"JAVA\" value=\"4\" />\r\n        </counts>\r\n      </usages-collector>\r\n      <usages-collector id=\"statistics.file.extensions.edit\">\r\n        <counts>\r\n          <entry key=\"java\" value=\"408\" />\r\n        </counts>\r\n      </usages-collector>\r\n      <usages-collector id=\"statistics.file.types.edit\">\r\n        <counts>\r\n          <entry key=\"JAVA\" value=\"408\" />\r\n        </counts>\r\n      </usages-collector>\r\n    </session>\r\n  </component>\r\n  <component name=\"FileEditorManager\">\r\n    <leaf>\r\n      <file pinned=\"false\" current-in-tab=\"false\">\r\n        <entry file=\"file://$PROJECT_DIR$/src/Agent.java\">\r\n          <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n            <state relative-caret-position=\"170\">\r\n              <caret line=\"10\" column=\"38\" lean-forward=\"true\" selection-start-line=\"10\" selection-start-column=\"38\" selection-end-line=\"10\" selection-end-column=\"38\" />\r\n            </state>\r\n          </provider>\r\n        </entry>\r\n      </file>\r\n      <file pinned=\"false\" current-in-tab=\"false\">\r\n        <entry file=\"file://$PROJECT_DIR$/src/Grid.java\">\r\n          <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n            <state relative-caret-position=\"133\">\r\n              <caret line=\"11\" column=\"26\" lean-forward=\"true\" selection-start-line=\"11\" selection-start-column=\"26\" selection-end-line=\"11\" selection-end-column=\"26\" />\r\n            </state>\r\n          </provider>\r\n        </entry>\r\n      </file>\r\n      <file pinned=\"false\" current-in-tab=\"false\">\r\n        <entry file=\"file://$PROJECT_DIR$/src/Main.java\">\r\n          <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n            <state>\r\n              <caret column=\"19\" lean-forward=\"true\" selection-start-column=\"19\" selection-end-column=\"19\" />\r\n            </state>\r\n          </provider>\r\n        </entry>\r\n      </file>\r\n      <file pinned=\"false\" current-in-tab=\"true\">\r\n        <entry file=\"file://$PROJECT_DIR$/src/Node.java\">\r\n          <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n            <state relative-caret-position=\"136\">\r\n              <caret line=\"8\" lean-forward=\"true\" selection-start-line=\"8\" selection-end-line=\"8\" />\r\n              <folding>\r\n                <element signature=\"e#367#368#0\" expanded=\"true\" />\r\n                <element signature=\"e#396#397#0\" expanded=\"true\" />\r\n                <element signature=\"e#556#557#0\" expanded=\"true\" />\r\n                <element signature=\"e#599#600#0\" expanded=\"true\" />\r\n                <element signature=\"e#676#677#0\" expanded=\"true\" />\r\n                <element signature=\"e#724#725#0\" expanded=\"true\" />\r\n              </folding>\r\n            </state>\r\n          </provider>\r\n        </entry>\r\n      </file>\r\n    </leaf>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"IdeDocumentHistory\">\r\n    <option name=\"CHANGED_PATHS\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/src/Main.java\" />\r\n        <option value=\"$PROJECT_DIR$/src/Node.java\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectFrameBounds\" extendedState=\"6\">\r\n    <option name=\"x\" value=\"-8\" />\r\n    <option name=\"y\" value=\"-8\" />\r\n    <option name=\"width\" value=\"1936\" />\r\n    <option name=\"height\" value=\"1056\" />\r\n  </component>\r\n  <component name=\"ProjectView\">\r\n    <navigator proportions=\"\" version=\"1\">\r\n      <foldersAlwaysOnTop value=\"true\" />\r\n    </navigator>\r\n    <panes>\r\n      <pane id=\"PackagesPane\" />\r\n      <pane id=\"Scope\" />\r\n      <pane id=\"ProjectPane\">\r\n        <subPane>\r\n          <expand>\r\n            <path>\r\n              <item name=\"AI_project3\" type=\"b2602c69:ProjectViewProjectNode\" />\r\n              <item name=\"AI_project3\" type=\"462c0819:PsiDirectoryNode\" />\r\n            </path>\r\n            <path>\r\n              <item name=\"AI_project3\" type=\"b2602c69:ProjectViewProjectNode\" />\r\n              <item name=\"AI_project3\" type=\"462c0819:PsiDirectoryNode\" />\r\n              <item name=\"src\" type=\"462c0819:PsiDirectoryNode\" />\r\n            </path>\r\n          </expand>\r\n          <select />\r\n        </subPane>\r\n      </pane>\r\n    </panes>\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"RunDashboard\">\r\n    <option name=\"ruleStates\">\r\n      <list>\r\n        <RuleState>\r\n          <option name=\"name\" value=\"ConfigurationTypeDashboardGroupingRule\" />\r\n        </RuleState>\r\n        <RuleState>\r\n          <option name=\"name\" value=\"StatusDashboardGroupingRule\" />\r\n        </RuleState>\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"SvnConfiguration\">\r\n    <configuration />\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"2c18ef92-35bc-405c-bfac-367eb750342e\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1542655330193</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1542655330193</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"ToolWindowManager\">\r\n    <frame x=\"-8\" y=\"-8\" width=\"1936\" height=\"1056\" extended-state=\"6\" />\r\n    <editor active=\"true\" />\r\n    <layout>\r\n      <window_info id=\"Image Layers\" />\r\n      <window_info id=\"Designer\" />\r\n      <window_info id=\"UI Designer\" />\r\n      <window_info id=\"Capture Tool\" />\r\n      <window_info id=\"Favorites\" side_tool=\"true\" />\r\n      <window_info active=\"true\" content_ui=\"combo\" id=\"Project\" order=\"0\" visible=\"true\" weight=\"0.25\" />\r\n      <window_info id=\"Structure\" order=\"1\" side_tool=\"true\" weight=\"0.25\" />\r\n      <window_info anchor=\"bottom\" id=\"Version Control\" />\r\n      <window_info anchor=\"bottom\" id=\"Terminal\" />\r\n      <window_info anchor=\"bottom\" id=\"Event Log\" side_tool=\"true\" />\r\n      <window_info anchor=\"bottom\" id=\"Message\" order=\"0\" />\r\n      <window_info anchor=\"bottom\" id=\"Find\" order=\"1\" />\r\n      <window_info anchor=\"bottom\" id=\"Run\" order=\"2\" />\r\n      <window_info anchor=\"bottom\" id=\"Debug\" order=\"3\" weight=\"0.4\" />\r\n      <window_info anchor=\"bottom\" id=\"Cvs\" order=\"4\" weight=\"0.25\" />\r\n      <window_info anchor=\"bottom\" id=\"Inspection\" order=\"5\" weight=\"0.4\" />\r\n      <window_info anchor=\"bottom\" id=\"TODO\" order=\"6\" />\r\n      <window_info anchor=\"right\" id=\"Palette\" />\r\n      <window_info anchor=\"right\" id=\"Theme Preview\" />\r\n      <window_info anchor=\"right\" id=\"Capture Analysis\" />\r\n      <window_info anchor=\"right\" id=\"Palette&#9;\" />\r\n      <window_info anchor=\"right\" id=\"Maven Projects\" />\r\n      <window_info anchor=\"right\" id=\"Commander\" internal_type=\"SLIDING\" order=\"0\" type=\"SLIDING\" weight=\"0.4\" />\r\n      <window_info anchor=\"right\" id=\"Ant Build\" order=\"1\" weight=\"0.25\" />\r\n      <window_info anchor=\"right\" content_ui=\"combo\" id=\"Hierarchy\" order=\"2\" weight=\"0.25\" />\r\n    </layout>\r\n  </component>\r\n  <component name=\"VcsContentAnnotationSettings\">\r\n    <option name=\"myLimit\" value=\"2678400000\" />\r\n  </component>\r\n  <component name=\"editorHistoryManager\">\r\n    <entry file=\"file://$PROJECT_DIR$/src/Agent.java\">\r\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n        <state relative-caret-position=\"170\">\r\n          <caret line=\"10\" column=\"38\" lean-forward=\"true\" selection-start-line=\"10\" selection-start-column=\"38\" selection-end-line=\"10\" selection-end-column=\"38\" />\r\n        </state>\r\n      </provider>\r\n    </entry>\r\n    <entry file=\"file://$PROJECT_DIR$/src/Grid.java\">\r\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n        <state relative-caret-position=\"133\">\r\n          <caret line=\"11\" column=\"26\" lean-forward=\"true\" selection-start-line=\"11\" selection-start-column=\"26\" selection-end-line=\"11\" selection-end-column=\"26\" />\r\n        </state>\r\n      </provider>\r\n    </entry>\r\n    <entry file=\"file://$PROJECT_DIR$/src/Main.java\">\r\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n        <state>\r\n          <caret column=\"19\" lean-forward=\"true\" selection-start-column=\"19\" selection-end-column=\"19\" />\r\n        </state>\r\n      </provider>\r\n    </entry>\r\n    <entry file=\"file://$PROJECT_DIR$/src/Node.java\">\r\n      <provider selected=\"true\" editor-type-id=\"text-editor\">\r\n        <state relative-caret-position=\"136\">\r\n          <caret line=\"8\" lean-forward=\"true\" selection-start-line=\"8\" selection-end-line=\"8\" />\r\n          <folding>\r\n            <element signature=\"e#367#368#0\" expanded=\"true\" />\r\n            <element signature=\"e#396#397#0\" expanded=\"true\" />\r\n            <element signature=\"e#556#557#0\" expanded=\"true\" />\r\n            <element signature=\"e#599#600#0\" expanded=\"true\" />\r\n            <element signature=\"e#676#677#0\" expanded=\"true\" />\r\n            <element signature=\"e#724#725#0\" expanded=\"true\" />\r\n          </folding>\r\n        </state>\r\n      </provider>\r\n    </entry>\r\n  </component>\r\n  <component name=\"masterDetails\">\r\n    <states>\r\n      <state key=\"ProjectJDKs.UI\">\r\n        <settings>\r\n          <last-edited>11</last-edited>\r\n          <splitter-proportions>\r\n            <option name=\"proportions\">\r\n              <list>\r\n                <option value=\"0.2\" />\r\n              </list>\r\n            </option>\r\n          </splitter-proportions>\r\n        </settings>\r\n      </state>\r\n    </states>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/workspace.xml	(date 1543614838000)
++++ .idea/workspace.xml	(date 1543692117966)
+@@ -1,11 +1,21 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ChangeListManager">
++<<<<<<< HEAD
+     <list default="true" id="2c18ef92-35bc-405c-bfac-367eb750342e" name="Default Changelist" comment="">
+       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.java" afterDir="false" />
+     </list>
++=======
++    <list default="true" id="258a180c-d826-4f96-b886-1dd20f460d32" name="Default Changelist" comment="">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Grid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Grid.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.java" afterDir="false" />
++    </list>
++    <ignored path="$PROJECT_DIR$/out/" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -13,32 +23,58 @@
+     <option name="LAST_RESOLUTION" value="IGNORE" />
+   </component>
+   <component name="FUSProjectUsageTrigger">
++<<<<<<< HEAD
+     <session id="-492714880">
+       <usages-collector id="statistics.lifecycle.project">
+         <counts>
+           <entry key="project.closed" value="1" />
+           <entry key="project.open.time.2" value="1" />
+           <entry key="project.opened" value="1" />
++=======
++    <session id="-172876051">
++      <usages-collector id="statistics.lifecycle.project">
++        <counts>
++          <entry key="project.closed" value="1" />
++          <entry key="project.open.time.0" value="1" />
++          <entry key="project.open.time.3" value="1" />
++          <entry key="project.opened" value="2" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+         </counts>
+       </usages-collector>
+       <usages-collector id="statistics.file.extensions.open">
+         <counts>
++<<<<<<< HEAD
+           <entry key="java" value="4" />
++=======
++          <entry key="java" value="3" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+         </counts>
+       </usages-collector>
+       <usages-collector id="statistics.file.types.open">
+         <counts>
++<<<<<<< HEAD
+           <entry key="JAVA" value="4" />
++=======
++          <entry key="JAVA" value="3" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+         </counts>
+       </usages-collector>
+       <usages-collector id="statistics.file.extensions.edit">
+         <counts>
++<<<<<<< HEAD
+           <entry key="java" value="408" />
++=======
++          <entry key="java" value="1840" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+         </counts>
+       </usages-collector>
+       <usages-collector id="statistics.file.types.edit">
+         <counts>
++<<<<<<< HEAD
+           <entry key="JAVA" value="408" />
++=======
++          <entry key="JAVA" value="1840" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+         </counts>
+       </usages-collector>
+     </session>
+@@ -46,24 +82,46 @@
+   <component name="FileEditorManager">
+     <leaf>
+       <file pinned="false" current-in-tab="false">
++<<<<<<< HEAD
+         <entry file="file://$PROJECT_DIR$/src/Agent.java">
+           <provider selected="true" editor-type-id="text-editor">
+             <state relative-caret-position="170">
+               <caret line="10" column="38" lean-forward="true" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
++=======
++        <entry file="file://$PROJECT_DIR$/src/Main.java">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="340">
++              <caret line="20" column="3" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+             </state>
+           </provider>
+         </entry>
+       </file>
++<<<<<<< HEAD
+       <file pinned="false" current-in-tab="false">
+         <entry file="file://$PROJECT_DIR$/src/Grid.java">
+           <provider selected="true" editor-type-id="text-editor">
+             <state relative-caret-position="133">
+               <caret line="11" column="26" lean-forward="true" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
++=======
++      <file pinned="false" current-in-tab="true">
++        <entry file="file://$PROJECT_DIR$/src/Grid.java">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="233">
++              <caret line="87" column="25" selection-start-line="87" selection-start-column="25" selection-end-line="87" selection-end-column="25" />
++              <folding>
++                <element signature="e#3527#3528#0" expanded="true" />
++                <element signature="e#3560#3561#0" expanded="true" />
++                <element signature="e#3606#3607#0" expanded="true" />
++                <element signature="e#3639#3640#0" expanded="true" />
++              </folding>
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+             </state>
+           </provider>
+         </entry>
+       </file>
+       <file pinned="false" current-in-tab="false">
++<<<<<<< HEAD
+         <entry file="file://$PROJECT_DIR$/src/Main.java">
+           <provider selected="true" editor-type-id="text-editor">
+             <state>
+@@ -85,6 +143,12 @@
+                 <element signature="e#676#677#0" expanded="true" />
+                 <element signature="e#724#725#0" expanded="true" />
+               </folding>
++=======
++        <entry file="file://$PROJECT_DIR$/src/Node.java">
++          <provider selected="true" editor-type-id="text-editor">
++            <state relative-caret-position="88">
++              <caret line="21" column="25" lean-forward="true" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+             </state>
+           </provider>
+         </entry>
+@@ -92,11 +156,16 @@
+     </leaf>
+   </component>
+   <component name="Git.Settings">
++<<<<<<< HEAD
++=======
++    <option name="ROOT_SYNC" value="DONT_SYNC" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+   <component name="IdeDocumentHistory">
+     <option name="CHANGED_PATHS">
+       <list>
++<<<<<<< HEAD
+         <option value="$PROJECT_DIR$/src/Main.java" />
+         <option value="$PROJECT_DIR$/src/Node.java" />
+       </list>
+@@ -108,13 +177,30 @@
+     <option name="width" value="1936" />
+     <option name="height" value="1056" />
+   </component>
++=======
++        <option value="$PROJECT_DIR$/src/Node.java" />
++        <option value="$PROJECT_DIR$/src/Main.java" />
++        <option value="$PROJECT_DIR$/src/Grid.java" />
++      </list>
++    </option>
++  </component>
++  <component name="ProjectFrameBounds">
++    <option name="x" value="953" />
++    <option name="width" value="974" />
++    <option name="height" value="1047" />
++  </component>
++  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+   <component name="ProjectView">
+     <navigator proportions="" version="1">
+       <foldersAlwaysOnTop value="true" />
+     </navigator>
+     <panes>
++<<<<<<< HEAD
+       <pane id="PackagesPane" />
+       <pane id="Scope" />
++=======
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+       <pane id="ProjectPane">
+         <subPane>
+           <expand>
+@@ -131,10 +217,21 @@
+           <select />
+         </subPane>
+       </pane>
++<<<<<<< HEAD
++    </panes>
++  </component>
++  <component name="PropertiesComponent">
++    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
++=======
++      <pane id="PackagesPane" />
++      <pane id="Scope" />
+     </panes>
+   </component>
+   <component name="PropertiesComponent">
++    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543364179070" />
+     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
++    <property name="settings.editor.selected.configurable" value="vcs.Git" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+   </component>
+   <component name="RunDashboard">
+     <option name="ruleStates">
+@@ -148,20 +245,52 @@
+       </list>
+     </option>
+   </component>
++<<<<<<< HEAD
++=======
++  <component name="RunManager">
++    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
++      <option name="MAIN_CLASS_NAME" value="Main" />
++      <module name="AI_project31" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <configuration default="true" type="Application" factoryName="Application">
++      <module name="AI_project31" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <recent_temporary>
++      <list>
++        <item itemvalue="Application.Main" />
++      </list>
++    </recent_temporary>
++  </component>
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+   <component name="SvnConfiguration">
+     <configuration />
+   </component>
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
++<<<<<<< HEAD
+       <changelist id="2c18ef92-35bc-405c-bfac-367eb750342e" name="Default Changelist" comment="" />
+       <created>1542655330193</created>
+       <option name="number" value="Default" />
+       <option name="presentableId" value="Default" />
+       <updated>1542655330193</updated>
++=======
++      <changelist id="258a180c-d826-4f96-b886-1dd20f460d32" name="Default Changelist" comment="" />
++      <created>1542387120946</created>
++      <option name="number" value="Default" />
++      <option name="presentableId" value="Default" />
++      <updated>1542387120946</updated>
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+     </task>
+     <servers />
+   </component>
+   <component name="ToolWindowManager">
++<<<<<<< HEAD
+     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+     <editor active="true" />
+     <layout>
+@@ -178,10 +307,26 @@
+       <window_info anchor="bottom" id="Message" order="0" />
+       <window_info anchor="bottom" id="Find" order="1" />
+       <window_info anchor="bottom" id="Run" order="2" />
++=======
++    <frame x="953" y="0" width="974" height="1047" extended-state="0" />
++    <editor active="true" />
++    <layout>
++      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.0" />
++      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
++      <window_info id="Image Layers" order="2" />
++      <window_info id="Designer" order="3" />
++      <window_info id="UI Designer" order="4" />
++      <window_info id="Capture Tool" order="5" />
++      <window_info id="Favorites" order="6" side_tool="true" />
++      <window_info anchor="bottom" id="Message" order="0" />
++      <window_info anchor="bottom" id="Find" order="1" />
++      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.28258488" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+       <window_info anchor="bottom" id="TODO" order="6" />
++<<<<<<< HEAD
+       <window_info anchor="right" id="Palette" />
+       <window_info anchor="right" id="Theme Preview" />
+       <window_info anchor="right" id="Capture Analysis" />
+@@ -190,12 +335,27 @@
+       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
++=======
++      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32092005" />
++      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
++      <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
++      <window_info anchor="bottom" id="Messages" order="10" weight="0.32968238" />
++      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
++      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
++      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
++      <window_info anchor="right" id="Palette" order="3" />
++      <window_info anchor="right" id="Capture Analysis" order="4" />
++      <window_info anchor="right" id="Theme Preview" order="5" />
++      <window_info anchor="right" id="Palette&#9;" order="6" />
++      <window_info anchor="right" id="Maven Projects" order="7" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+     </layout>
+   </component>
+   <component name="VcsContentAnnotationSettings">
+     <option name="myLimit" value="2678400000" />
+   </component>
+   <component name="editorHistoryManager">
++<<<<<<< HEAD
+     <entry file="file://$PROJECT_DIR$/src/Agent.java">
+       <provider selected="true" editor-type-id="text-editor">
+         <state relative-caret-position="170">
+@@ -207,11 +367,18 @@
+       <provider selected="true" editor-type-id="text-editor">
+         <state relative-caret-position="133">
+           <caret line="11" column="26" lean-forward="true" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
++=======
++    <entry file="file://$PROJECT_DIR$/src/Node.java">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="88">
++          <caret line="21" column="25" lean-forward="true" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+         </state>
+       </provider>
+     </entry>
+     <entry file="file://$PROJECT_DIR$/src/Main.java">
+       <provider selected="true" editor-type-id="text-editor">
++<<<<<<< HEAD
+         <state>
+           <caret column="19" lean-forward="true" selection-start-column="19" selection-end-column="19" />
+         </state>
+@@ -228,11 +395,28 @@
+             <element signature="e#599#600#0" expanded="true" />
+             <element signature="e#676#677#0" expanded="true" />
+             <element signature="e#724#725#0" expanded="true" />
++=======
++        <state relative-caret-position="340">
++          <caret line="20" column="3" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
++        </state>
++      </provider>
++    </entry>
++    <entry file="file://$PROJECT_DIR$/src/Grid.java">
++      <provider selected="true" editor-type-id="text-editor">
++        <state relative-caret-position="233">
++          <caret line="87" column="25" selection-start-line="87" selection-start-column="25" selection-end-line="87" selection-end-column="25" />
++          <folding>
++            <element signature="e#3527#3528#0" expanded="true" />
++            <element signature="e#3560#3561#0" expanded="true" />
++            <element signature="e#3606#3607#0" expanded="true" />
++            <element signature="e#3639#3640#0" expanded="true" />
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+           </folding>
+         </state>
+       </provider>
+     </entry>
+   </component>
++<<<<<<< HEAD
+   <component name="masterDetails">
+     <states>
+       <state key="ProjectJDKs.UI">
+@@ -249,4 +433,6 @@
+       </state>
+     </states>
+   </component>
++=======
++>>>>>>> 71529ed573e8e325a4df850cbed725e488f165e4
+ </project>
+\ No newline at end of file
+Index: .idea/AI_project3.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"JAVA_MODULE\" version=\"4\">\r\n  <component name=\"NewModuleRootManager\" inherit-compiler-output=\"true\">\r\n    <exclude-output />\r\n    <content url=\"file://$MODULE_DIR$\" />\r\n    <orderEntry type=\"inheritedJdk\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/AI_project3.iml	(date 1543614838000)
++++ .idea/AI_project3.iml	(date 1543614930227)
+@@ -2,7 +2,9 @@
+ <module type="JAVA_MODULE" version="4">
+   <component name="NewModuleRootManager" inherit-compiler-output="true">
+     <exclude-output />
+-    <content url="file://$MODULE_DIR$" />
++    <content url="file://$MODULE_DIR$">
++      <sourceFolder url="file://$MODULE_DIR$/AI_project3/src" isTestSource="false" />
++    </content>
+     <orderEntry type="inheritedJdk" />
+     <orderEntry type="sourceFolder" forTests="false" />
+   </component>

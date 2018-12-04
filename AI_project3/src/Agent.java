@@ -104,21 +104,33 @@ public class Agent {
     //   agent action methods
 
     public void solve(Grid g){
-        setupPreceptsGrid(g.getGrid()[0].length);
+        setupPreceptsGrid(g.getGrid()[0].length - 2);
         frontier = new ArrayList<NodePercept>();
         Stack<NodePercept> node_stack = new Stack();
+
         node_stack.push(memory[1][1]);  //push the start node, I guess
+        this.current = node_stack.peek();
+
         memory[1][1].setSafe(true); //this square are safe
         memory[1][1].setVisited(true);
-        while(!isDead && !foundGold){
+        while(!isDead && !(foundGold && current.getY() == 1 && current.getX() == 1) && !node_stack.empty()){
+            if(foundGold)
+            {
+                return_home();
+                break;
+            }
+            if(g.getGrid()[current.getX()][current.getY()].isWumpus() || g.getGrid()[current.getX()][current.getY()].isPit())
+            {
+                isDead = true;
+            }
         do  {
             printMemory();  //print the grid every single move
-            NodePercept peek = node_stack.peek();   //
-            this.current = peek;
-            peek.setVisited(true);
-            //System.out.println("current vals:" + " " + peek.getY() + " "  + peek.getX());
-            update_memory(peek, g, peek.getY(), peek.getX());
-            NodePercept val = get_move(peek.getY(), peek.getX(), g);
+            this.current = node_stack.peek();
+            current.setVisited(true);
+            
+            System.out.println("current vals:" + " " + current.getY() + " "  + current.getX());
+            update_memory(current, g, current.getY(), current.getX());
+            NodePercept val = get_move(current.getY(), current.getX(), g);
             if(g.getGrid()[current.getY()][current.getX()].isGold() == true) //
             {
                 foundGold = true;
@@ -150,6 +162,7 @@ public class Agent {
             }
             else {
                 move_to(nextNode.getY(), nextNode.getX());
+                node_stack.push(current);
             }
         }
 
@@ -216,23 +229,29 @@ public class Agent {
                 else if(memory[i][j].isVisited() == false){
                     ArrayList<NodePercept> adjacent = return_adjacent(i, j);
                     int risk = 0;
+                    boolean neighbVisited = false;
                     for (int z = 0; z < adjacent.size(); z++)
                     {
                         if(adjacent.get(z).isPit())
                         {
                             risk++;
                         }
-                        if(adjacent.get(z).isWumpus())
-                        {
+                        if(adjacent.get(z).isWumpus()) {
                             risk++;
                         }
+                        if(adjacent.get(z).isVisited())
+                        {
+                            neighbVisited = true;
+                        }
+
                     }
+                    if(neighbVisited == true){
                     switch(risk) {
                         case 1: risk1.add(memory[i][j]); break;
                         case 2: risk2.add(memory[i][j]); break;
                         case 3: risk3.add(memory[i][j]); break;
                         default: risk4.add(memory[i][j]); break;
-                    }
+                    }    }
                 }
             }
         }
@@ -265,6 +284,7 @@ public class Agent {
                 min = temp.get(i);
             }
         }
+        System.out.println(min.getY() + ", " + min.getX());
         return min;
 
 
@@ -286,21 +306,26 @@ public class Agent {
         boolean done = false;
         ArrayList<NodePercept> visited = new ArrayList<NodePercept>();
         visited.add(this.current);
-        while(done == false && dist < 100 && current.getY() != y && current.getX() != x)
+        while(done == false && dist < 100 && !(current.getY() == y && current.getX() == x))
         {
             dist++;
+            System.out.println(dist);
             int loop = visited.size();
             for (int i = 0; i < loop; i++)
             {
+                System.out.println("First for");
                 NodePercept temp = visited.get(i);
                 ArrayList<NodePercept> adjacent = return_adjacent(temp.getY(), temp.getX());
                 for (int j = 0; j < adjacent.size(); j++)
                 {
+                    System.out.println("second for");
                     NodePercept temp2 = adjacent.get(j);
                     if(!temp2.visitedForStack && temp2.isVisited())
                     {
+                        System.out.println("not visited for stack, is visited tho");
                         if(temp2.getY() == y && temp2.getX() == x)
                         {
+                            System.out.println("Is the square we're looking for");
                             done = true;
                             break;
                         }
@@ -417,6 +442,7 @@ public class Agent {
 //                        adjacent.get(j).setGold(true);
                         //adjacent.get(j).setSafe(true);}
                         memory[y][x].setGold(true);
+                        foundGold = true;
                         System.out.print(" glitter");
 
                 }

@@ -63,12 +63,52 @@ public class Agent {
 
     }
 
+    public void explore_safe(Grid grid, int y, int x)
+    {
+        frontier = new ArrayList<NodePercept>();
+        Stack<NodePercept> node_stack = new Stack();
+        node_stack.push(memory[y][x]);  //push the start node, I guess
+        memory[y][x].setSafe(true); //this square are safe
+        memory[y][x].setVisited(true);
+        do  {
+            printMemory();  //print the grid every single move
+            NodePercept peek = node_stack.peek();   //
+            this.current = peek;
+            peek.setVisited(true);
+            //System.out.println("current vals:" + " " + peek.getY() + " "  + peek.getX());
+            update_memory(peek, grid, peek.getY(), peek.getX());
+            NodePercept val = get_move(peek.getY(), peek.getX(), grid);
+            if(grid.getGrid()[current.getY()][current.getX()].isGold() == true) //
+            {
+                foundGold = true;
+                score+=1000;
+                return_home();
+                System.out.println("WE EATING " + score);
+                break;
+            }
+            if (val != null) {
+                node_stack.push(val);
+                score--;
+                System.out.println("If:" +  val.getX() + val.getY());
+            } else {
+                frontier.add(current); //frontier of possible not-safe spaces
+                node_stack.pop();
+                System.out.println("else");
+                score--;
+            }
+        }while(safe_space() == true);
+        printMemory();
+        System.out.println(current.getY() + " " + current.getX());
+        System.out.println(score);
+    }
 
     //   agent action methods
 
     public void solve(Grid g){
 
-         setupPreceptsGrid(g.getGrid()[0].length);
+
+
+         /**setupPreceptsGrid(g.getGrid()[0].length);
          current = memory[1][1];
          while(!isDead || !(foundGold && current == memory[1][1])){
              //do moving stuff
@@ -93,7 +133,7 @@ public class Agent {
          }
 
         System.out.println("your score: " + score);
-        System.out.println("you entered this many cells: " + getEnteredCells());
+        System.out.println("you entered this many cells: " + getEnteredCells());**/
     }
 
     public int getEnteredCells() {
@@ -359,44 +399,7 @@ public class Agent {
 
 
 
-    public void explore_safe(Grid grid, int y, int x)
-    {
-        frontier = new ArrayList<NodePercept>();
-        Stack<NodePercept> node_stack = new Stack();
-        node_stack.push(memory[y][x]);  //push the start node, I guess
-        memory[y][x].setSafe(true); //this square are safe
-        memory[y][x].setVisited(true);
-        do  {
-            printMemory();  //print the grid every single move
-            NodePercept peek = node_stack.peek();   //
-            this.current = peek;
-            peek.setVisited(true);
-            //System.out.println("current vals:" + " " + peek.getY() + " "  + peek.getX());
-            update_memory(peek, grid, peek.getY(), peek.getX());
-            NodePercept val = get_move(peek.getY(), peek.getX(), grid);
-            if(grid.getGrid()[current.getY()][current.getX()].isGold() == true) //
-            {
-                foundGold = true;
-                score+=1000;
-                return_home();
-                System.out.println("WE EATING " + score);
-                break;
-            }
-            if (val != null) {
-                node_stack.push(val);
-                score--;
-                System.out.println("If:" +  val.getX() + val.getY());
-            } else {
-                frontier.add(current); //frontier of possible not-safe spaces
-                node_stack.pop();
-                System.out.println("else");
-                score--;
-            }
-        }while(safe_space() == true);
-        printMemory();
-        System.out.println(current.getY() + " " + current.getX());
-        System.out.println(score);
-    }
+
 
     public void move(Grid grid, String direction)
     {

@@ -69,8 +69,8 @@ public class Agent {
     public void solve(Grid g){
 
          setupPreceptsGrid(g.getGrid()[0].length);
-         Node current = g.getNode(1,1);
-         while(!isDead || !(foundGold && current == g.getNode(1,1))){
+         current = memory[1][1];
+         while(!isDead || !(foundGold && current == memory[1][1])){
              //do moving stuff
 
              if(current.isPit()){
@@ -335,7 +335,7 @@ public class Agent {
           }
     }
 
-    public boolean shoot(Grid g, Node current){
+    public boolean shoot(Grid g){
         boolean wLife = g.isWumpusLife();
         Node[][] grid = g.getGrid();
 
@@ -375,6 +375,7 @@ public class Agent {
                 }
             }
             arrow = false;
+            score -= 10;
 
             //else dont change wumpusLife
         }
@@ -459,9 +460,38 @@ public class Agent {
      public int move_path(Node node1, Node node2)
     {
 
-        return
+        return 0;
     }
+    public void deal_with_wumpus(Grid g){
+        //go thru frontier to find the square with the wumpus
+        NodePercept wumpus = frontier.get(0);
+        for(int i = 0; i < frontier.size(); i++){
+            if(frontier.get(i).isWumpus()){
+                wumpus = frontier.get(i);
+                break;
+            }
+        }
+        NodePercept moveTo;
+        ArrayList<NodePercept> adj = return_adjacent(wumpus.getX(), wumpus.getY());
+        //check adjacent squares for safety; take first safe option
+        for( int i = 0; i < adj.size(); i ++){
+            if(adj.get(i).is_safe()){
+                moveTo = adj.get(i);
+                break;
+            }
+        }
+        //call move_to on current square and square selected above
 
+        //set the direction based off of relationship to new square & wumpus square
+
+        //set wumpus status
+        g.setWumpusLife(shoot(g));
+
+        //if( !g.isWumpusLife())
+            //set all nodeprecepts wumpus = false
+        //else
+            //set all nodeprecepts wumpus = false in current direction
+    }
 }
 
 //if gold take and bounce

@@ -52,7 +52,7 @@ public class Grid {
         x = rand.nextInt(grid.length);
         y = rand.nextInt(grid.length);
 
-        while ((x == 0 && y == 0) || (grid[x][y].getSymbol() == '+')) {
+        while ((x == 1 && y == 1) || (grid[x][y].getSymbol() == '+')) {
             //cant place wumpus on agent
             x = rand.nextInt(grid.length);
             y = rand.nextInt(grid.length);

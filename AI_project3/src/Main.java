@@ -13,17 +13,23 @@ public class Main {
             Scanner in = new Scanner(System.in);
 
             while(choice != 0){
+                System.out.println();
                 System.out.println("what size world would you like to solve? Must be an integer > 0: ");
                 System.out.println("Or press 0 to exit.");
                 choice = in.nextInt();
+
+                if(choice == 0){
+                    System.out.println("thanks for playing");
+                    return;
+                }
 
                 Grid g = new Grid(choice);
                 g.printGrid();
                 Agent a = new Agent();
                 a.solve(g);
+
+
             }
-
-
         }
 
 }

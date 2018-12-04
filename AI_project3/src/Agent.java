@@ -31,7 +31,7 @@ public class Agent {
     //set up precepts grid
     public void setupPreceptsGrid(int dim) {
         this.memory = new NodePercept[dim + 2][dim + 2];
-        System.out.println(memory[0].length);
+
         for(int i = 0; i < memory.length; i++){
             for(int j = 0; j < memory.length; j++){
                 memory[i][j] = new NodePercept(i,j);
@@ -40,23 +40,13 @@ public class Agent {
                 }
                 else
                     memory[i][j].setSymbol('_');
-                System.out.print(memory[i][j].getSymbol() + " ");
+                
             }
-            System.out.println();
+
         }
 
     }
 
-    public void printMemory() {
-        for(int i = 0; i < memory.length; i++){
-            System.out.println();
-            for(int j = 0; j < memory.length; j++) {
-                System.out.print(memory[i][j].getSymbol() + "  ");
-            }
-        }
-        System.out.println();
-
-    }
 
 
     //   agent action methods
@@ -76,8 +66,7 @@ public class Agent {
             {
                 score+=1000;
                 return_home();
-                printMemory();
-                System.out.println("Score:" + getScore());
+                
                 return;
             }
             if(g.getGrid()[current.getY()][current.getX()].isWumpus() || g.getGrid()[current.getY()][current.getX()].isPit())
@@ -150,12 +139,11 @@ public class Agent {
             else {
                 move_to(nextNode.getY(), nextNode.getX());
                 node_stack.push(current);
-                printMemory();
+
             }
         }
 
         }
-        printMemory();
 
     }
 
@@ -489,7 +477,7 @@ public class Agent {
         }
 
         //call move_to on current square and square selected above
-        System.out.println(wumpus.getX() + " " +  wumpus.getY());
+
         move_to(wumpus.getY(), wumpus.getX());
 
         this.current = wumpus;
@@ -519,7 +507,6 @@ public class Agent {
         else if(wumpus.getY() > throw_arrow.getY()){
             direction = "east";
         }
-        System.out.println(direction);
 
         //set wumpus status
         g.setWumpusLife(shoot(g));

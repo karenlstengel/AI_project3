@@ -14,16 +14,16 @@ public class Grid {
 
     public Grid(int dim){
         grid = new Node[dim + 2][dim + 2];
-        System.out.println(grid[0].length);
+
         for(int i = 0; i < grid.length; i++){
             for(int j = 0; j < grid.length; j++){
                 grid[i][j] = new Node(i,j);
                 if(i == 0 || i == grid.length - 1 || j == 0 || j == grid.length - 1 ){
                     grid[i][j].setSymbol('+');
                 }
-                System.out.print(grid[i][j].getSymbol());
+
             }
-            System.out.println();
+            
         }
         this.wumpusLife = true;
         

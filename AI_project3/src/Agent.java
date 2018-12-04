@@ -117,7 +117,9 @@ public class Agent {
             if(foundGold)
             {
                 return_home();
-                break;
+                printMemory();
+                System.out.println("Score:" + getScore());
+                return;
             }
             if(g.getGrid()[current.getY()][current.getX()].isWumpus() || g.getGrid()[current.getY()][current.getX()].isPit())
             {
@@ -153,10 +155,20 @@ public class Agent {
                 score--;
             } 
         }while(safe_space() == true);
-        if(0 != 0 //deal with wumpus
-        )
+        int wumpusCount = 0;
+        for (int yc = 1; yc < memory.length - 1; yc++)
         {
-
+            for (int xc = 1; xc < memory.length - 1; xc++)
+            {
+                if(memory[yc][xc].isWumpus())
+                {
+                    wumpusCount++;
+                }
+            }
+        }
+        if(wumpusCount <= 2)
+        {
+            deal_with_wumpus(g, wumpusCount);
         }
         else {
             NodePercept nextNode = findLeastRisky();
@@ -563,7 +575,7 @@ public class Agent {
         if(arrow){
             // shoot in current direction.
             //north (i -1), south (i +1), east(j +1), west (j-1)
-
+            System.out.println("shooting");
 
             // if arrow enters square of wumpus then wumpuslife = false
             if(direction.equals("north")){
@@ -684,7 +696,7 @@ public class Agent {
         return frontier;
     }
 
-    public void deal_with_wumpus(Grid g){
+    public void deal_with_wumpus(Grid g, int wumpusCount){
         //go thru frontier to find the square with the wumpus
         NodePercept wumpus = frontier.get(0);
         for(int i = 0; i < frontier.size(); i++){
@@ -693,7 +705,7 @@ public class Agent {
                 break;
             }
         }
-        ArrayList<NodePercept> adj = return_adjacent(wumpus.getY(), wumpus.getX());
+        ArrayList<NodePercept> adj = return_adjacent(wumpus.getX(), wumpus.getY());
         NodePercept moveTo = adj.get(0);
 
         //check adjacent squares for safety; take first safe option

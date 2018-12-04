@@ -10,10 +10,6 @@ import java.util.*;
 
 public class Agent {
 
-    private int top_wall; // top_wall == grid.length -1 bot_wall == 0 left_wall == grid.length -1 ....
-    private int bot_wall = 1;
-    private int left_wall;
-    private int right_wall = 1;
     private boolean foundGold;
     private int score;
     private NodePercept[][] memory;
@@ -62,44 +58,6 @@ public class Agent {
 
     }
 
-    public void explore_safe(Grid grid, int y, int x)
-    {
-        frontier = new ArrayList<NodePercept>();
-        Stack<NodePercept> node_stack = new Stack();
-        node_stack.push(memory[y][x]);  //push the start node, I guess
-        memory[y][x].setSafe(true); //this square are safe
-        memory[y][x].setVisited(true);
-        do  {
-            printMemory();  //print the grid every single move
-            NodePercept peek = node_stack.peek();   //
-            this.current = peek;
-            peek.setVisited(true);
-            //System.out.println("current vals:" + " " + peek.getY() + " "  + peek.getX());
-            update_memory(peek, grid, peek.getY(), peek.getX());
-            NodePercept val = get_move(peek.getY(), peek.getX(), grid);
-            if(grid.getGrid()[current.getY()][current.getX()].isGold() == true) //
-            {
-                foundGold = true;
-                score+=1000;
-                return_home();
-                System.out.println("Your score is " + score);
-                break;
-            }
-            if (val != null) {
-                node_stack.push(val);
-                score--;
-                //System.out.println("If:" +  val.getX() + val.getY());
-            } else {
-                frontier.add(current); //frontier of possible not-safe spaces
-                node_stack.pop();
-                //System.out.println("else");
-                score--;
-            }
-        }while(safe_space() == true);
-        printMemory();
-        System.out.println(current.getY() + " " + current.getX());
-        System.out.println(score);
-    }
 
     //   agent action methods
 
@@ -125,7 +83,14 @@ public class Agent {
             if(g.getGrid()[current.getY()][current.getX()].isWumpus() || g.getGrid()[current.getY()][current.getX()].isPit())
             {
                 isDead = true;
-                System.out.println("You DIED");
+                if (g.getGrid()[current.getY()][current.getX()].isPit()){
+                    System.out.println("You Died by falling in a pit!");
+                }
+                else{
+                    System.out.println("You Died being eaten by the WUMPUS!");
+                }
+                System.out.println("You entered this many rooms: " + getEnteredCells());
+                System.out.println("Your score is: " + score);
                 return;
             }                                                                          
         do  {
@@ -134,11 +99,10 @@ public class Agent {
                 node_stack.push(current);
             }
 
-            printMemory();  //print the grid every single move
+
             this.current = node_stack.peek();
             current.setVisited(true);
-            
-            System.out.println("current vals:" + " " + current.getY() + " "  + current.getX());
+
             update_memory(current, g, current.getY(), current.getX());
             NodePercept val = get_move(current.getY(), current.getX(), g);
             if(g.getGrid()[current.getY()][current.getX()].isGold() == true) //
@@ -146,18 +110,20 @@ public class Agent {
                 foundGold = true;
                 score+=1000;
                 return_home();
-                System.out.println("WE EATING " + score);
+                System.out.println("Your found the gold!");
+                System.out.println("You entered this many rooms: " + getEnteredCells());
+                System.out.println("Your score is: " + score);
                 return;
             }
             if (val != null) {
                 node_stack.push(val);
                 score--;
-                System.out.println("If:" +  val.getX() + val.getY());
+
             } else {
 
                 frontier.add(current); //frontier of possible not-safe spaces
                 node_stack.pop();
-                System.out.println("else");
+
                 score--;
             } 
         }while(safe_space() == true);
@@ -190,36 +156,7 @@ public class Agent {
 
         }
         printMemory();
-        System.out.println(current.getY() + " " + current.getX());
-        System.out.println(score);
 
-
-         /**setupPreceptsGrid(g.getGrid()[0].length);
-         current = memory[1][1];
-         while(!isDead || !(foundGold && current == memory[1][1])){
-             //do moving stuff
-
-             if(current.isPit()){
-                 isDead = true;
-                 System.out.println("Game over. You fell in a pit...");
-             }
-             else if(current.isWumpus()){   //this condition is checking the "isWumpus" condition from the nodePercept class, which is not necessarily accurate to whether there's a wumpus in the square. You could die from simply having the possibility of a wumpus in the square based on this. Also, this doesn't account for if the wumpus has been killed
-                 isDead = true;
-                 System.out.println("Game over. You were eaten by the WUMPUS X.X");
-             }
-
-             if(current.isGold()){
-                 foundGold = true;
-                 score += 1000;
-             }
-         }
-
-         if(foundGold){
-             System.out.println("the game ended with finding gold!");
-         }
-
-        System.out.println("your score: " + score);
-        System.out.println("you entered this many cells: " + getEnteredCells());**/
     }
 
     public int getEnteredCells() {
@@ -309,19 +246,8 @@ public class Agent {
         System.out.println(min.getY() + ", " + min.getX());
         return min;
 
-
-        //deal with wumpus maybe
     }
 
-    public void decide(){
-        //if no safe squares available
-
-        //call logic base and move or something
-        //grid.setWumpuslife = shoot()
-        //if iswumpuslife
-        //print scream -> for all node precepts set wumpus = false
-        //else all np current - edge wumpus = false
-    }
 
     public void move_to(int y, int x){
         memory[y][x].setVisited(true);
@@ -332,23 +258,23 @@ public class Agent {
         while(done == false && dist < 100 && !(current.getY() == y && current.getX() == x))
         {
             dist++;
-            //System.out.println(dist);
+
             int loop = visited.size();
             for (int i = 0; i < loop; i++)
             {
-                //System.out.println("First for");
+
                 NodePercept temp = visited.get(i);
                 ArrayList<NodePercept> adjacent = return_adjacent(temp.getY(), temp.getX());
                 for (int j = 0; j < adjacent.size(); j++)
                 {
-                    //System.out.println("second for");
+
                     NodePercept temp2 = adjacent.get(j);
                     if(!temp2.visitedForStack && temp2.isVisited())
                     {
-                        //System.out.println("not visited for stack, is visited tho");
+
                         if(temp2.getY() == y && temp2.getX() == x)
                         {
-                            //System.out.println("Is the square we're looking for");
+
                             done = true;
                             break;
                         }
@@ -359,16 +285,10 @@ public class Agent {
             }
         }
         score = score - dist;
-        System.out.println("Subtracting " + dist + " from score");
-        System.out.println("Moving to " + y + ", " + x);
         current.setSymbol('s');
         current = memory[y][x];
         current.setSymbol('v');
     }
-
-
-
-
 
 
     public ArrayList<NodePercept> return_adjacent(int y, int x) //from memory
@@ -379,31 +299,16 @@ public class Agent {
         adjacent.add(memory[y - 1][x]);
         adjacent.add(memory[y][x - 1]);
         adjacent.add(memory[y][x + 1]);
-        int count = 0;
-        //System.out.println(adjacent.size());
+
 
         for (int i = 0; i < adjacent.size(); i++) {
 
-            //System.out.println("neighbors: " + adjacent.get(i).getY() + " " + adjacent.get(i).getX() + " " + adjacent.get(i).getSymbol());
 
             if (adjacent.get(i).getSymbol() == '+') {
                 adjacent.get(i).setWall((true));
-                //cool_guy[i] = adjacent.get(i);
+
             }
         }
-//
-//               if (adjacent.get(i).getY() == memory.length - 1 || adjacent.get(i).getX() == memory.length - 1) { //if either of these are true then it must be the wall we don't know about. Now we know
-//
-//                   this.top_wall = memory.length - 1; //technically this assumes agent knows its a square. Can change, may need method to check existence.
-//                   this.left_wall = memory.length - 1;
-//
-//               }
-//               adjacent.get(i).setWall(true);
-//               System.out.println("wall removed:" + adjacent.get(i).getY() + " " + adjacent.get(i).getX());
-//               adjacent.remove(i);
-//           //} //remove any walls
-          //  }
-        //}
 
             return adjacent;
 
@@ -413,18 +318,12 @@ public class Agent {
 
     public void return_home(){
           move_to(1, 1);
-          //Sam: If we keep rationing, we should have enough left.
-        //Frodo: Enough? For what?
-        //SAM looks at Frodo with concern
-        //Sam: For the journey home.
-
     }
 
 
     public void update_memory(NodePercept node, Grid grid, int y, int x)
     {
-        //int y = Node.getY();
-        //int x = Node.getX();
+
         // 0 = stench, 1 = breeze, 2 = glitter
         boolean[] senses = grid.getGrid()[y][x].getSense(); //index 0 = stench, 1 = breeze, 2 = glitter
 
@@ -433,8 +332,7 @@ public class Agent {
         if (senses[0] == false) {
             for (int j = 0; j < adjacent.size(); j++) {
                 adjacent.get(j).setWumpus(false);
-                //adjacent.get(j).setSafe(true);}
-                //System.out.print(" sense is 0");
+
             }
         }
         else {
@@ -454,20 +352,14 @@ public class Agent {
             {
                 for (int j = 0; j < adjacent.size(); j++) {
                     adjacent.get(j).setPit(false);
-                    //adjacent.get(j).setSafe(true);}
-                    //System.out.print(" no breeze");
                 }
             }
 
                 if (senses[2] == true) //if there is a glitter there be gold
                 {
-//                    for (int j = 0; j < adjacent.size(); j++) ?
-//                        adjacent.get(j).setGold(true);
-                        //adjacent.get(j).setSafe(true);}
+
                         memory[y][x].setGold(true);
                         foundGold = true;
-//                        System.out.print(" glitter");
-//
                 }
 
          is_safe(node);
@@ -497,15 +389,6 @@ public class Agent {
                 }
             }
 
-
-
-
-
-    public void move(Grid grid, String direction)
-    {
-
-    }
-
     public NodePercept get_move(int y, int x, Grid grid)
     {
         if((memory[y+1][x].is_safe() == true) && memory[y+1][x].isVisited() == false && memory[y+1][x].isWall() == false) {
@@ -533,46 +416,6 @@ public class Agent {
         }
     }
 
-
-
-    public void rotate(String c){
-          if(c.equals("clockwise")){
-              //rotate direction clockwise
-              if(direction.equals("north")){
-                  direction = "east";
-              }
-              else if(direction.equals("south")){
-                   direction = "west";
-              }
-              else if(direction.equals("east")){
-                  direction = "south";
-              }
-              else if(direction.equals("west")){
-                  direction = "north";
-              }
-              else{
-                  System.out.println("direction not valid.");
-              }
-          }
-          else if(c.equals("counter")){
-              //rotate direction counter clockwise
-              if(direction.equals("north")){
-                  direction = "west";
-              }
-              else if(direction.equals("south")){
-                  direction = "east";
-              }
-              else if(direction.equals("east")){
-                  direction = "north";
-              }
-              else if(direction.equals("west")){
-                  direction = "south";
-              }
-              else{
-                  System.out.println("direction not valid.");
-              }
-          }
-    }
 
     public boolean shoot(Grid g){
         boolean wLife = g.isWumpusLife();
@@ -629,78 +472,11 @@ public class Agent {
 
     //get and check boolean methods
 
-    public boolean isArrow() {
-        return arrow;
-    }
-
-    public boolean isDead() {
-        return isDead;
-    }
-
-    public boolean isFoundGold() {
-        return foundGold;
-    }
 
     public int getScore() {
         return score;
     }
 
-    public String getDirection() {
-        return direction;
-    }
-
-
-    //set methods
-    public void setArrow(boolean arrow) {
-        this.arrow = arrow;
-    }
-    public boolean check_dead(Grid g, int y, int x)
-    {
-        if(g.getGrid()[y][x].getSymbol() == 'P' || g.getGrid()[y][x].getSymbol() == 'W')
-        {
-            isDead = true;
-        }
-        else
-            isDead = false;
-        return isDead;
-    }
-
-    public void setDead(boolean dead) {
-        isDead = dead;
-    }
-
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
-
-    public void setFoundGold(boolean foundGold) {
-        this.foundGold = foundGold;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public NodePercept[][] getMemory() {
-        return memory;
-    }
-
-    public boolean[] getPrecepts(){
-        boolean[] temp = new boolean[1];
-        return temp;
-    }
-
-
-    public void set_current(NodePercept current)
-    {
-        this.current = current;
-    }
-
-
-    public ArrayList<NodePercept> return_frontier()
-    {
-        return frontier;
-    }
 
     public void deal_with_wumpus(Grid g, int wumpusCount){
         //go thru frontier to find the square with the wumpus
@@ -711,16 +487,7 @@ public class Agent {
                 break;
             }
         }
-        //ArrayList<NodePercept> adj = return_adjacent(wumpus.getX(), wumpus.getY());
-       // NodePercept moveTo = adj.get(0);
 
-        //check adjacent squares for safety; take first safe option
-//        for( int i = 0; i < adj.size(); i ++){
-//            if(adj.get(i).is_safe()){
-//                moveTo = adj.get(i);
-//                break;
-//            }
-//        }
         //call move_to on current square and square selected above
         System.out.println(wumpus.getX() + " " +  wumpus.getY());
         move_to(wumpus.getY(), wumpus.getX());

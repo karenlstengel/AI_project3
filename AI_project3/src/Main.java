@@ -1,26 +1,29 @@
 import java.lang.reflect.Array;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 
         public static void main(String args[]){
 
-            System.out.println("Welcome to WUMPUS WORLD YEEEEEHAW");
-            Grid g4 = new Grid(4);
-            g4.printGrid();
-            Agent a = new Agent();
-            a.solve(g4);
-            ArrayList<NodePercept> val = a.return_frontier();
-            for (int i = 0; i < a.return_frontier().size(); i++)
-            {
-                System.out.println(val.get(i).getY() + " " + val.get(i).getX());
+            System.out.println("Welcome to WUMPUS WORLD");
 
+            int choice = 4;
+            Scanner in = new Scanner(System.in);
+
+            while(choice != 0){
+                System.out.println("what size world would you like to solve? Must be an integer > 0: ");
+                System.out.println("Or press 0 to exit.");
+                choice = in.nextInt();
+
+                Grid g = new Grid(choice);
+                g.printGrid();
+                Agent a = new Agent();
+                a.solve(g);
             }
 
-            //System.out.println(a.safe_space());
 
-           // a.explore_safe(g4);
-           // a.solve(g4);
         }
 
 }

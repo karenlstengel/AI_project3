@@ -177,18 +177,6 @@ public class Grid {
         }
     }
 
-    public void vals(){
-
-
-        // index 0 = stench; 1 = breeze; 2 = glitter; 3 = bump
-        for(int i = 0; i < grid.length; i++){
-            for(int j = 0; j < grid[0].length; j++) {
-                boolean[] sense = grid[i][j].getSense();
-                System.out.println("Stench: " + sense[0] + ", breeze: " + sense[1] + ", glitter: " + sense[2]);
-            }
-            System.out.println();
-        }
-    }
 
     public boolean isWumpusLife(){
         return wumpusLife;
@@ -198,17 +186,10 @@ public class Grid {
         wumpusLife = life;
     }
 
-    public Node getNode(int i, int j){
-        return grid[i][j];
-    }
 
     public Node[][] getGrid(){
         return grid;
     }
 }
 
-//* Need: 1) return_home() 2) get_gold() 3) array list that takes in Nodes on frontier of safe_space().
-//loop through those A) is_wumpus, attempt to deal with and then call safe space again. B) If not Wumpus and only pits if on a corner piece and you kno
-//you've been there before i.e. the spot where you are is a right angle then go the other way.
-//need a died() fxn.
 

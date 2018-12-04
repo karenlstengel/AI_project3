@@ -67,12 +67,5 @@ public class Node {
         this.wumpus = wumpus;
     }
 
-    public int getX(){
-        return x;
-    }
-
-    public int getY(){
-        return y;
-    }
 
 }

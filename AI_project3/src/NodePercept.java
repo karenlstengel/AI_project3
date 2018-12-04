@@ -15,7 +15,7 @@ public class NodePercept {
     private int x_val;
     private boolean is_safe;
     public boolean visitedForStack = false;
-    public int distanceForSearch = 0;
+
 
     public NodePercept(int y, int x){
         y_val = y;
@@ -52,9 +52,6 @@ public class NodePercept {
         this.gold = gold;
     }
 
-    public void setSolved(boolean solved) {
-        isSolved = solved;
-    }
 
     public void setSafe(boolean is_safe) {
         this.is_safe = is_safe;
@@ -75,10 +72,6 @@ public class NodePercept {
     }
     //boolean check methods
 
-    public boolean isGold() {
-        return gold;
-    }
-
     public boolean is_safe() {
         if((!wumpus && !wall && !pit) || is_safe)
         {
@@ -93,9 +86,6 @@ public class NodePercept {
         return pit;
     }
 
-    public boolean isSolved() {
-        return isSolved;
-    }
 
     public boolean isVisited() {
         return visited;

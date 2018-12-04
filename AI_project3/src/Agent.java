@@ -123,6 +123,7 @@ public class Agent {
             {
                 isDead = true;
                 System.out.println("You DIED");
+                return;
             }                                                                          
         do  {
 
@@ -165,6 +166,7 @@ public class Agent {
             else {
                 move_to(nextNode.getY(), nextNode.getX());
                 node_stack.push(current);
+                printMemory();
             }
         }
 
@@ -316,19 +318,19 @@ public class Agent {
             int loop = visited.size();
             for (int i = 0; i < loop; i++)
             {
-                System.out.println("First for");
+                //System.out.println("First for");
                 NodePercept temp = visited.get(i);
                 ArrayList<NodePercept> adjacent = return_adjacent(temp.getY(), temp.getX());
                 for (int j = 0; j < adjacent.size(); j++)
                 {
-                    System.out.println("second for");
+                    //System.out.println("second for");
                     NodePercept temp2 = adjacent.get(j);
                     if(!temp2.visitedForStack && temp2.isVisited())
                     {
-                        System.out.println("not visited for stack, is visited tho");
+                        //System.out.println("not visited for stack, is visited tho");
                         if(temp2.getY() == y && temp2.getX() == x)
                         {
-                            System.out.println("Is the square we're looking for");
+                            //System.out.println("Is the square we're looking for");
                             done = true;
                             break;
                         }

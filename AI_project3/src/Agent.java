@@ -5,7 +5,6 @@
  * the cave. responisible for moving and making locial decisions.
  */
 
-import java.io.*;
 import java.util.*;
 
 
@@ -105,7 +104,58 @@ public class Agent {
     //   agent action methods
 
     public void solve(Grid g){
+        frontier = new ArrayList<NodePercept>();
+        Stack<NodePercept> node_stack = new Stack();
+        node_stack.push(memory[1][1]);  //push the start node, I guess
+        memory[1][1].setSafe(true); //this square are safe
+        memory[1][1].setVisited(true);
+        while(!isDead && !foundGold){
+        do  {
+            printMemory();  //print the grid every single move
+            NodePercept peek = node_stack.peek();   //
+            this.current = peek;
+            peek.setVisited(true);
+            //System.out.println("current vals:" + " " + peek.getY() + " "  + peek.getX());
+            update_memory(peek, g, peek.getY(), peek.getX());
+            NodePercept val = get_move(peek.getY(), peek.getX(), g);
+            if(g.getGrid()[current.getY()][current.getX()].isGold() == true) //
+            {
+                foundGold = true;
+                score+=1000;
+                return_home();
+                System.out.println("WE EATING " + score);
+                break;
+            }
+            if (val != null) {
+                node_stack.push(val);
+                score--;
+                System.out.println("If:" +  val.getX() + val.getY());
+            } else {
+                frontier.add(current); //frontier of possible not-safe spaces
+                node_stack.pop();
+                System.out.println("else");
+                score--;
+            }
+        }while(safe_space() == true);
+        if(//deal with wumpus
+        )
+        {
 
+        }
+        else {
+            NodePercept nextNode = findLeastRisky();
+            if (nextNode == null){
+                break;
+            }
+            else {
+                move_to(nextNode.getY(), nextNode.getX());
+            }
+        }
+
+        }
+        printMemory();
+        System.out.println(current.getY() + " " + current.getX());
+        System.out.println(score);
 
 
          /**setupPreceptsGrid(g.getGrid()[0].length);
@@ -148,7 +198,7 @@ public class Agent {
         return entered;
     }
 
-    public NodePercept moveToLeastRisky()
+    public NodePercept findLeastRisky()
     {
         ArrayList<NodePercept> risk1 = new ArrayList<NodePercept>(); //for squares where there's only one breeze adjacent
         ArrayList<NodePercept> risk2 = new ArrayList<NodePercept>(); //for squares where there's two breezes

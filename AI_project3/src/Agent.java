@@ -22,13 +22,14 @@ public class Agent {
     private boolean arrow;
     private boolean isDead;
     private NodePercept current;
+    private ArrayList<NodePercept> frontier;
 
-    public Agent(){
+    public Agent()
+    {
          this.foundGold = false;
          this.arrow = true;
          this.direction = "north";      //right
          this.isDead = false;
-
 
     }
 
@@ -55,7 +56,7 @@ public class Agent {
         for(int i = 0; i < memory.length; i++){
             System.out.println();
             for(int j = 0; j < memory.length; j++) {
-                System.out.print(memory[i][j].getSymbol() + " ");
+                System.out.print(memory[i][j].getSymbol() + "  ");
             }
         }
         System.out.println();
@@ -109,7 +110,6 @@ public class Agent {
 
     public void decide(){
         //call logic base and move or something
-
         //grid.setWumpuslife = shoot()
         //if iswumpuslife
         //print scream -> for all node precepts set wumpus = false
@@ -119,6 +119,9 @@ public class Agent {
     public void move(){
         //move
     }
+
+
+
 
 
 
@@ -161,9 +164,15 @@ public class Agent {
     }
 
 
-    public void update_memory(NodePercept node, Grid grid, int y, int x)
+
+    public void return_home()
     {
 
+    }
+
+
+    public void update_memory(NodePercept node, Grid grid, int y, int x)
+    {
         //int y = Node.getY();
         //int x = Node.getX();
         // 0 = stench, 1 = breeze, 2 = glitter
@@ -189,11 +198,12 @@ public class Agent {
 
                 if (senses[2] == true) //if there is a glitter there be gold
                 {
-                    for (int j = 0; j < adjacent.size(); j++) {
-                        adjacent.get(j).setGold(true);
+//                    for (int j = 0; j < adjacent.size(); j++) ?
+//                        adjacent.get(j).setGold(true);
                         //adjacent.get(j).setSafe(true);}
+                        memory[y][x].setGold(true);
                         System.out.print(" glitter");
-                    }
+
                 }
 
          is_safe(node);
@@ -219,14 +229,9 @@ public class Agent {
                     if(adjacent.get(i).isWall() == false && adjacent.get(i).isPit() ==false && adjacent.get(i).isWumpus() == false)
                     {
                         adjacent.get(i).setSafe(true);
-
                     }
-
                 }
-
             }
-
-
 
 
 
@@ -234,12 +239,9 @@ public class Agent {
     {
 
         Stack<NodePercept> node_stack = new Stack();
-
         node_stack.push(memory[1][1]);
         memory[1][1].setSafe(true);
         memory[1][1].setVisited(true);
-
-
         do  {
             printMemory();
             NodePercept peek = node_stack.peek();
@@ -247,20 +249,21 @@ public class Agent {
             peek.setVisited(true);
             //System.out.println("current vals:" + " " + peek.getY() + " "  + peek.getX());
             update_memory(peek, grid, peek.getY(), peek.getX());
-
             NodePercept val = get_move(peek.getY(), peek.getX(), grid); //gets the next move value
             if (val != null) {
                 node_stack.push(val);
                 score--;
                 System.out.println("If:" +  val.getX() + val.getY());
-
             } else {
+//                frontier.add(current); //frontier of possible not-safe spaces
                 node_stack.pop();
-
                 System.out.println("else");
                 score--;
             }
         }while(safe_space() == true);
+
+
+        System.out.println(current.getY() + " " + current.getX());
     }
 
     public void move(Grid grid, String direction)
@@ -273,7 +276,6 @@ public class Agent {
         if((memory[y+1][x].is_safe() == true) && memory[y+1][x].isVisited() == false && memory[y+1][x].isWall() == false) {
             memory[y][x].setVisited(true);
             return memory[y+1][x];
-
         }
         else if((memory[y][x +1].is_safe() == true) && memory[y][x +1].isVisited()==false && memory[y+1][x].isWall() == false){
             memory[y][x].setVisited(true);
@@ -412,6 +414,16 @@ public class Agent {
     public void setArrow(boolean arrow) {
         this.arrow = arrow;
     }
+    public boolean check_dead(Grid g, int y, int x)
+    {
+        if(g.getGrid()[y][x].getSymbol() == 'P' || g.getGrid()[y][x].getSymbol() == 'W')
+        {
+            isDead = true;
+        }
+        else
+            isDead = false;
+        return isDead;
+    }
 
     public void setDead(boolean dead) {
         isDead = dead;
@@ -437,4 +449,22 @@ public class Agent {
         boolean[] temp = new boolean[1];
         return temp;
     }
+
+//
+//    public void move_to(NodePercept here, NodePercept there)
+//    {
+//
+//
+//    }
+     public int move_path(Node node1, Node node2)
+    {
+
+        return
+    }
+
 }
+
+//if gold take and bounce
+//move_to()
+//deal_with_wumpus()
+//choose_pit()

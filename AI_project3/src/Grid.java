@@ -206,3 +206,9 @@ public class Grid {
         return grid;
     }
 }
+
+//* Need: 1) return_home() 2) get_gold() 3) array list that takes in Nodes on frontier of safe_space().
+//loop through those A) is_wumpus, attempt to deal with and then call safe space again. B) If not Wumpus and only pits if on a corner piece and you kno
+//you've been there before i.e. the spot where you are is a right angle then go the other way.
+//need a died() fxn.
+

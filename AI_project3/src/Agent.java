@@ -129,6 +129,10 @@ public class Agent {
                 return;
             }                                                                          
         do  {
+            if(node_stack.isEmpty())
+            {
+                node_stack.push(current);
+            }
 
             printMemory();  //print the grid every single move
             this.current = node_stack.peek();
@@ -168,7 +172,7 @@ public class Agent {
                 }
             }
         }
-        if(wumpusCount <= 2)
+        if(wumpusCount <= 2 && arrow)
         {
             deal_with_wumpus(g, wumpusCount);
         }

@@ -293,7 +293,7 @@ public class Agent {
             return null;
         }
         NodePercept min = temp.get(0);
-        for(int i = 0; i < temp.size(); i++)
+        for(int i = 0; i < temp.size(); i++) // are we calculating disCur twice by strting i @ 0..?
         {
             int distCur = Math.abs(current.getY() - min.getY()) + Math.abs(current.getX() - min.getX());
             int distNex = Math.abs(current.getY() - temp.get(i).getY()) + Math.abs(current.getX() - temp.get(i).getX());

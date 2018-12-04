@@ -108,6 +108,28 @@ public class Agent {
         return entered;
     }
 
+    public NodePercept moveToLeastRisky()
+    {
+        ArrayList<NodePercept> risk1 = new ArrayList<NodePercept>(); //for squares where there's only one breeze adjacent
+        ArrayList<NodePercept> risk2 = new ArrayList<NodePercept>(); //for squares where there's two breezes
+        ArrayList<NodePercept> risk3 = new ArrayList<NodePercept>(); //for squares where there's three breezes
+        ArrayList<NodePercept> risk4 = new ArrayList<NodePercept>(); //for squares where there's both breeze and wumpus adjacent
+        for(int i = 1; i < memory.length - 1; i++)
+        {
+            for (int j = 1; j < memory.length - 1; j++)
+            {
+                if(memory[i][j].isVisited() == false && memory[i][j].is_safe())
+                {
+                    return memory[i][j];
+                }
+                else {
+
+                }
+            }
+        }
+        //deal with wumpus maybe
+    }
+
     public void decide(){
         //if no safe squares available
 
@@ -120,12 +142,14 @@ public class Agent {
 
     public void move_to(int y, int x){
         int dist = 0;
+        boolean done = false;
         ArrayList<NodePercept> visited = new ArrayList<NodePercept>();
         visited.add(this.current);
-        while(dist < 100)
+        while(done == false && dist < 100 && current.getY() != y && current.getX() != x)
         {
             dist++;
-            for (int i = 0; i < visited.size(); i++)
+            int loop = visited.size();
+            for (int i = 0; i < loop; i++)
             {
                 NodePercept temp = visited.get(i);
                 ArrayList<NodePercept> adjacent = return_adjacent(temp.getY(), temp.getX());
@@ -136,6 +160,7 @@ public class Agent {
                     {
                         if(temp2.getY() == y && temp2.getX() == x)
                         {
+                            done = true;
                             break;
                         }
                         temp2.visitedForStack = true;
@@ -145,7 +170,9 @@ public class Agent {
             }
         }
         score = score - dist;
-        current.setSymbol('S');
+        System.out.println("Subtracting " + dist + " from score");
+        System.out.println("Moving to " + y + ", " + x);
+        current.setSymbol('s');
         current = memory[y][x];
         current.setSymbol('A');
     }
@@ -196,11 +223,16 @@ public class Agent {
 
 
     public void return_home(){
+<<<<<<< Updated upstream
           move_to(1, 1);
           //Sam: If we keep rationing, we should have enough left.
         //Frodo: Enough? For what?
         //SAM looks at Frodo with concern
         //Sam: For the journey home.
+=======
+        move_to(1,1);
+
+>>>>>>> Stashed changes
     }
 
 
@@ -287,6 +319,7 @@ public class Agent {
             {
                 foundGold = true;
                 score+=1000;
+                return_home();
                 System.out.println("WE EATING " + score);
                 break;
             }
@@ -301,7 +334,9 @@ public class Agent {
                 score--;
             }
         }while(safe_space() == true);
+        printMemory();
         System.out.println(current.getY() + " " + current.getX());
+        System.out.println(score);
     }
 
     public void move(Grid grid, String direction)

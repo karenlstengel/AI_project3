@@ -419,8 +419,8 @@ public class Agent {
             arrow = false;
             score -= 10;
 
-            //else dont change wumpusLife
         }
+        //else dont change wumpusLife
 
         else{
             System.out.println("no arrows");
@@ -493,54 +493,18 @@ public class Agent {
         return temp;
     }
 
-//
-//    public void move_to(NodePercept here, NodePercept there)
-//    {
-//
-//
-//    }
-
 
     public void set_current(NodePercept current)
     {
         this.current = current;
     }
 
-//     public int move_path(NodePercept here, NodePercept going_to)
-//    {
-//        int count = 0;
-//        //up
-//        if(here.getY() > going_to.getY())
-//        {
-//            count += (here.getY() - going_to.getY());
-//        }
-//
-//        //down
-//        if(here.getY() < going_to.getY())
-//        {
-//            count += (going_to.getY() - here.getY());
-//        }
-//
-//        //left
-//        if(here.getX() > going_to.getX())
-//        {
-//            count += (here.getX() - going_to.getY());
-//        }
-//
-//        //right
-//        if(here.getX() < going_to.getX())
-//        {
-//            count += (going_to.getY() - here.getY());
-//        }
-//
-//        score += count;
-//        return count;//don't actually need at the moment.
-//    }
 
     public ArrayList<NodePercept> return_frontier()
     {
         return frontier;
     }
+
     public void deal_with_wumpus(Grid g){
         //go thru frontier to find the square with the wumpus
         NodePercept wumpus = frontier.get(0);
@@ -550,8 +514,9 @@ public class Agent {
                 break;
             }
         }
-        NodePercept moveTo;
-        ArrayList<NodePercept> adj = return_adjacent(wumpus.getX(), wumpus.getY());
+        ArrayList<NodePercept> adj = return_adjacent(wumpus.getY(), wumpus.getX());
+        NodePercept moveTo = adj.get(0);
+
         //check adjacent squares for safety; take first safe option
         for( int i = 0; i < adj.size(); i ++){
             if(adj.get(i).is_safe()){
@@ -560,16 +525,65 @@ public class Agent {
             }
         }
         //call move_to on current square and square selected above
+        move_to(moveTo.getY(), moveTo.getX());
 
         //set the direction based off of relationship to new square & wumpus square
+        //north (i -1), south (i +1), east(j +1), west (j-1)
+        if(wumpus.getX() < current.getX()){
+            direction = "north";
+        }
+        else if(wumpus.getX() > current.getX()){
+            direction = "south";
+        }
+        else if(wumpus.getY() < current.getY()){
+            direction = "west";
+        }
+        else if(wumpus.getY() > current.getY()){
+            direction = "east";
+        }
 
         //set wumpus status
         g.setWumpusLife(shoot(g));
 
-        //if( !g.isWumpusLife())
+        if( !g.isWumpusLife()) {
+
+            //set the square 
+            g.getGrid()[wumpus.getX()][wumpus.getY()].setWumpus(false);
+
             //set all nodeprecepts wumpus = false
-        //else
-            //set all nodeprecepts wumpus = false in current direction
+            for(int i = 0; i < memory.length; i++){
+                for(int j = 0; j< memory[0].length; j++){
+                      memory[i][j].setWumpus(false);
+                }
+            }
+        }
+
+        else{
+            //set all nodeprecepts wumpus = false in current direction until wall
+            if(direction.equals("north")){
+                for(int i = current.getX(); i >= 0; i--){
+                      memory[i][current.getY()].setWumpus(false);
+                }
+            }
+            else if(direction.equals("south")){
+                for(int i = current.getX(); i < g.getGrid().length; i++){
+                    memory[i][current.getY()].setWumpus(false);
+                }
+            }
+            else if(direction.equals("east")){
+                for(int j = current.getY(); j < g.getGrid().length; j ++){
+                    memory[current.getY()][j].setWumpus(false);
+                }
+            }
+            else{
+                //direction = west
+                for(int j = current.getY(); j >= 0; j--){
+                    memory[current.getY()][j].setWumpus(false);
+                }
+            }
+
+        }
+
     }
 }
 

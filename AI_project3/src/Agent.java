@@ -224,7 +224,7 @@ public class Agent {
         System.out.println("Moving to " + y + ", " + x);
         current.setSymbol('s');
         current = memory[y][x];
-        current.setSymbol('A');
+        current.setSymbol('v');
     }
 
 
@@ -363,18 +363,18 @@ public class Agent {
     {
         frontier = new ArrayList<NodePercept>();
         Stack<NodePercept> node_stack = new Stack();
-        node_stack.push(memory[y][x]);
-        memory[y][x].setSafe(true);
+        node_stack.push(memory[y][x]);  //push the start node, I guess
+        memory[y][x].setSafe(true); //this square are safe
         memory[y][x].setVisited(true);
         do  {
-            printMemory();
-            NodePercept peek = node_stack.peek();
+            printMemory();  //print the grid every single move
+            NodePercept peek = node_stack.peek();   //
             this.current = peek;
             peek.setVisited(true);
             //System.out.println("current vals:" + " " + peek.getY() + " "  + peek.getX());
             update_memory(peek, grid, peek.getY(), peek.getX());
             NodePercept val = get_move(peek.getY(), peek.getX(), grid);
-            if(grid.getGrid()[current.getY()][current.getX()].isGold() == true)
+            if(grid.getGrid()[current.getY()][current.getX()].isGold() == true) //
             {
                 foundGold = true;
                 score+=1000;

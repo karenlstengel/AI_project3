@@ -109,6 +109,8 @@ public class Agent {
     }
 
     public void decide(){
+        //if no safe squares available
+
         //call logic base and move or something
         //grid.setWumpuslife = shoot()
         //if iswumpuslife
@@ -116,8 +118,36 @@ public class Agent {
         //else all np current - edge wumpus = false
     }
 
-    public void move(){
-        //move
+    public void move_to(int y, int x){
+        int dist = 0;
+        ArrayList<NodePercept> visited = new ArrayList<NodePercept>();
+        visited.add(this.current);
+        while(dist < 100)
+        {
+            dist++;
+            for (int i = 0; i < visited.size(); i++)
+            {
+                NodePercept temp = visited.get(i);
+                ArrayList<NodePercept> adjacent = return_adjacent(temp.getY(), temp.getX());
+                for (int j = 0; j < adjacent.size(); j++)
+                {
+                    NodePercept temp2 = adjacent.get(j);
+                    if(!temp2.visitedForStack && temp2.isVisited())
+                    {
+                        if(temp2.getY() == y && temp2.getX() == x)
+                        {
+                            break;
+                        }
+                        temp2.visitedForStack = true;
+                        visited.add(temp2);
+                    }
+                }
+            }
+        }
+        score = score - dist;
+        current.setSymbol('S');
+        current = memory[y][x];
+        current.setSymbol('A');
     }
 
 
@@ -165,8 +195,7 @@ public class Agent {
 
 
 
-    public void return_home()
-    {
+    public void return_home(){
 
     }
 
@@ -459,7 +488,7 @@ public class Agent {
      public int move_path(Node node1, Node node2)
     {
 
-        return
+        return 0; 
     }
 
 }

@@ -77,7 +77,7 @@ public class Agent {
                  isDead = true;
                  System.out.println("Game over. You fell in a pit...");
              }
-             else if(current.isWumpus()){
+             else if(current.isWumpus()){   //this condition is checking the "isWumpus" condition from the nodePercept class, which is not necessarily accurate to whether there's a wumpus in the square. You could die from simply having the possibility of a wumpus in the square based on this. Also, this doesn't account for if the wumpus has been killed
                  isDead = true;
                  System.out.println("Game over. You were eaten by the WUMPUS X.X");
              }
@@ -176,7 +176,7 @@ public class Agent {
         //int y = Node.getY();
         //int x = Node.getX();
         // 0 = stench, 1 = breeze, 2 = glitter
-        boolean[] senses = grid.getGrid()[y][x].getSense();
+        boolean[] senses = grid.getGrid()[y][x].getSense(); //index 0 = stench, 1 = breeze, 2 = glitter
 
         ArrayList<NodePercept> adjacent = return_adjacent(y, x);
 

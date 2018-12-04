@@ -8,6 +8,7 @@
 public class Node {
 
     private char symbol; //tells what the square contains
+    private boolean solved;
     private boolean wumpus;
     private boolean pit;
     private boolean gold;
@@ -62,7 +63,6 @@ public class Node {
     public boolean isWumpus() {
         return wumpus;
     }
-    
     public void setWumpus(boolean wumpus){
         this.wumpus = wumpus;
     }

@@ -196,7 +196,11 @@ public class Agent {
 
 
     public void return_home(){
-
+          move_to(1, 1);
+          //Sam: If we keep rationing, we should have enough left.
+        //Frodo: Enough? For what?
+        //SAM looks at Frodo with concern
+        //Sam: For the journey home.
     }
 
 

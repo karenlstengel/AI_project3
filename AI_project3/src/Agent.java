@@ -82,17 +82,17 @@ public class Agent {
                 foundGold = true;
                 score+=1000;
                 return_home();
-                System.out.println("WE EATING " + score);
+                System.out.println("Your score is " + score);
                 break;
             }
             if (val != null) {
                 node_stack.push(val);
                 score--;
-                System.out.println("If:" +  val.getX() + val.getY());
+                //System.out.println("If:" +  val.getX() + val.getY());
             } else {
                 frontier.add(current); //frontier of possible not-safe spaces
                 node_stack.pop();
-                System.out.println("else");
+                //System.out.println("else");
                 score--;
             }
         }while(safe_space() == true);
@@ -150,6 +150,7 @@ public class Agent {
                 score--;
                 System.out.println("If:" +  val.getX() + val.getY());
             } else {
+
                 frontier.add(current); //frontier of possible not-safe spaces
                 node_stack.pop();
                 System.out.println("else");
@@ -461,8 +462,8 @@ public class Agent {
                         //adjacent.get(j).setSafe(true);}
                         memory[y][x].setGold(true);
                         foundGold = true;
-                        System.out.print(" glitter");
-
+//                        System.out.print(" glitter");
+//
                 }
 
          is_safe(node);
@@ -706,33 +707,48 @@ public class Agent {
                 break;
             }
         }
-        ArrayList<NodePercept> adj = return_adjacent(wumpus.getX(), wumpus.getY());
-        NodePercept moveTo = adj.get(0);
+        //ArrayList<NodePercept> adj = return_adjacent(wumpus.getX(), wumpus.getY());
+       // NodePercept moveTo = adj.get(0);
 
         //check adjacent squares for safety; take first safe option
-        for( int i = 0; i < adj.size(); i ++){
-            if(adj.get(i).is_safe()){
-                moveTo = adj.get(i);
-                break;
-            }
-        }
+//        for( int i = 0; i < adj.size(); i ++){
+//            if(adj.get(i).is_safe()){
+//                moveTo = adj.get(i);
+//                break;
+//            }
+//        }
         //call move_to on current square and square selected above
-        move_to(moveTo.getY(), moveTo.getX());
+        System.out.println(wumpus.getX() + " " +  wumpus.getY());
+        move_to(wumpus.getY(), wumpus.getX());
 
+        this.current = wumpus;
         //set the direction based off of relationship to new square & wumpus square
         //north (i -1), south (i +1), east(j +1), west (j-1)
-        if(wumpus.getX() < current.getX()){
+        ArrayList<NodePercept> adj = return_adjacent(wumpus.getX(), wumpus.getY());
+        ArrayList<NodePercept> danger_zone = new ArrayList<NodePercept>();
+        for (int i = 0; i < adj.size(); i++)
+        {
+           if (!(adj.get(i).is_safe() && adj.get(i).isVisited()))
+            {
+                danger_zone.add(adj.get(i));
+            }
+        }
+
+        NodePercept throw_arrow = danger_zone.get(0);
+
+        if(wumpus.getX() < throw_arrow.getX()){
             direction = "north";
         }
-        else if(wumpus.getX() > current.getX()){
+        else if(wumpus.getX() > throw_arrow.getX()){
             direction = "south";
         }
-        else if(wumpus.getY() < current.getY()){
+        else if(wumpus.getY() < throw_arrow.getY()){
             direction = "west";
         }
-        else if(wumpus.getY() > current.getY()){
+        else if(wumpus.getY() > throw_arrow.getY()){
             direction = "east";
         }
+        System.out.println(direction);
 
         //set wumpus status
         g.setWumpusLife(shoot(g));
@@ -747,6 +763,7 @@ public class Agent {
             for(int i = 0; i < memory.length; i++){
                 for(int j = 0; j< memory[0].length; j++){
                       memory[i][j].setWumpus(false);
+                      g.getGrid()[i][j].setSense(0, false);
                       g.getGrid()[i][j].setWumpus(false); //remove wumpus's existence from original grid
                 }
             }
@@ -754,6 +771,15 @@ public class Agent {
 
         else{
             //set all nodeprecepts wumpus = false in current direction until wall
+
+            for(int i = 0; i < danger_zone.size(); i++)
+            {
+                danger_zone.get(i).setWumpus(true);
+
+            }
+
+
+
             if(direction.equals("north")){
                 for(int i = current.getX(); i >= 0; i--){
                       memory[i][current.getY()].setWumpus(false);

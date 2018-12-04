@@ -10,6 +10,12 @@ public class Main {
             g4.printGrid();
             Agent a = new Agent();
             a.solve(g4);
+            ArrayList<NodePercept> val = a.return_frontier();
+            for (int i = 0; i < a.return_frontier().size(); i++)
+            {
+                System.out.println(val.get(i).getY() + " " + val.get(i).getX());
+
+            }
 
             //System.out.println(a.safe_space());
 

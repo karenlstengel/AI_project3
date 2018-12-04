@@ -14,6 +14,8 @@ public class NodePercept {
     private int y_val;
     private int x_val;
     private boolean is_safe;
+    public boolean visitedForStack = false;
+    public int distanceForSearch = 0;
 
     public NodePercept(int y, int x){
         y_val = y;

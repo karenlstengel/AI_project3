@@ -119,11 +119,13 @@ public class Agent {
                 return_home();
                 break;
             }
-            if(g.getGrid()[current.getX()][current.getY()].isWumpus() || g.getGrid()[current.getX()][current.getY()].isPit())
+            if(g.getGrid()[current.getY()][current.getX()].isWumpus() || g.getGrid()[current.getY()][current.getX()].isPit())
             {
                 isDead = true;
-            }
+                System.out.println("You DIED");
+            }                                                                          
         do  {
+
             printMemory();  //print the grid every single move
             this.current = node_stack.peek();
             current.setVisited(true);
@@ -137,7 +139,7 @@ public class Agent {
                 score+=1000;
                 return_home();
                 System.out.println("WE EATING " + score);
-                break;
+                return;
             }
             if (val != null) {
                 node_stack.push(val);
@@ -148,7 +150,7 @@ public class Agent {
                 node_stack.pop();
                 System.out.println("else");
                 score--;
-            }
+            } 
         }while(safe_space() == true);
         if(0 != 0 //deal with wumpus
         )
@@ -302,6 +304,7 @@ public class Agent {
     }
 
     public void move_to(int y, int x){
+        memory[y][x].setVisited(true);
         int dist = 0;
         boolean done = false;
         ArrayList<NodePercept> visited = new ArrayList<NodePercept>();

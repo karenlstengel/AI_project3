@@ -116,6 +116,7 @@ public class Agent {
         while(!isDead && !(foundGold && current.getY() == 1 && current.getX() == 1) && !node_stack.empty()){
             if(foundGold)
             {
+                score+=1000;
                 return_home();
                 printMemory();
                 System.out.println("Score:" + getScore());
@@ -326,7 +327,7 @@ public class Agent {
         while(done == false && dist < 100 && !(current.getY() == y && current.getX() == x))
         {
             dist++;
-            System.out.println(dist);
+            //System.out.println(dist);
             int loop = visited.size();
             for (int i = 0; i < loop; i++)
             {
@@ -746,6 +747,7 @@ public class Agent {
             for(int i = 0; i < memory.length; i++){
                 for(int j = 0; j< memory[0].length; j++){
                       memory[i][j].setWumpus(false);
+                      g.getGrid()[i][j].setWumpus(false); //remove wumpus's existence from original grid
                 }
             }
         }

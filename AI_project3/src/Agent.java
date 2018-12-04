@@ -122,11 +122,61 @@ public class Agent {
                 {
                     return memory[i][j];
                 }
-                else {
-
+                else if(memory[i][j].isVisited() == false){
+                    ArrayList<NodePercept> adjacent = return_adjacent(i, j);
+                    int risk = 0;
+                    for (int z = 0; z < adjacent.size(); z++)
+                    {
+                        if(adjacent.get(z).isPit())
+                        {
+                            risk++;
+                        }
+                        if(adjacent.get(z).isWumpus())
+                        {
+                            risk++;
+                        }
+                    }
+                    switch(risk) {
+                        case 1: risk1.add(memory[i][j]); break;
+                        case 2: risk2.add(memory[i][j]); break;
+                        case 3: risk3.add(memory[i][j]); break;
+                        default: risk4.add(memory[i][j]); break;
+                    }
                 }
             }
         }
+        ArrayList<NodePercept> temp;
+        if(!risk1.isEmpty())
+        {
+            temp = risk1;
+        }
+        else if(!risk2.isEmpty())
+        {
+            temp = risk2;
+        }
+        else if(!risk3.isEmpty())
+        {
+            temp = risk3;
+        }
+        else if(!risk4.isEmpty())
+        {
+            temp = risk4;
+        }
+        else {
+            return null;
+        }
+        NodePercept min = temp.get(0);
+        for(int i = 0; i < temp.size(); i++)
+        {
+            int distCur = Math.abs(current.getY() - min.getY()) + Math.abs(current.getX() - min.getX());
+            int distNex = Math.abs(current.getY() - temp.get(i).getY()) + Math.abs(current.getX() - temp.get(i).getX());
+            if(distNex < distCur) {
+                min = temp.get(i);
+            }
+        }
+        return min;
+
+
         //deal with wumpus maybe
     }
 
@@ -223,16 +273,12 @@ public class Agent {
 
 
     public void return_home(){
-<<<<<<< Updated upstream
           move_to(1, 1);
           //Sam: If we keep rationing, we should have enough left.
         //Frodo: Enough? For what?
         //SAM looks at Frodo with concern
         //Sam: For the journey home.
-=======
-        move_to(1,1);
 
->>>>>>> Stashed changes
     }
 
 
@@ -250,6 +296,19 @@ public class Agent {
                 adjacent.get(j).setWumpus(false);
                 //adjacent.get(j).setSafe(true);}
                 //System.out.print(" sense is 0");
+            }
+        }
+        else {
+            for (int i = 1; i < memory.length - 1; i++)
+            {
+                for (int j = 1; j < memory.length - 1; j++)
+                {
+                    NodePercept temp = memory[i][j];
+                    if(!adjacent.contains(temp))
+                    {
+                        temp.setWumpus(false);
+                    }
+                }
             }
         }
             if (senses[1] == false) // if there is no breeze

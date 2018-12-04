@@ -47,10 +47,8 @@ public class Agent {
 
     }
 
-
-
-    //   agent action methods
-
+    
+        //how the agent solves the grid. keeps track of moving and state of agent
     public void solve(Grid g){
         setupPreceptsGrid(g.getGrid()[0].length - 2);
         frontier = new ArrayList<NodePercept>();
@@ -159,6 +157,7 @@ public class Agent {
         return entered;
     }
 
+    //when no safe rooms exist but we havent foudn the gold, choose the safest room to move to
     public NodePercept findLeastRisky()
     {
         ArrayList<NodePercept> risk1 = new ArrayList<NodePercept>(); //for squares where there's only one breeze adjacent
@@ -279,7 +278,7 @@ public class Agent {
     }
 
 
-    public ArrayList<NodePercept> return_adjacent(int y, int x) //from memory
+    public ArrayList<NodePercept> return_adjacent(int y, int x) //from memory get all neighbors of given sqaure
     {
         ArrayList<NodePercept> adjacent = new ArrayList<NodePercept>();
 
@@ -405,7 +404,7 @@ public class Agent {
     }
 
 
-    public boolean shoot(Grid g){
+    public boolean shoot(Grid g){      //shoots the arrow
         boolean wLife = g.isWumpusLife();
         Node[][] grid = g.getGrid();
 
@@ -458,15 +457,8 @@ public class Agent {
     }
 
 
-    //get and check boolean methods
 
-
-    public int getScore() {
-        return score;
-    }
-
-
-    public void deal_with_wumpus(Grid g, int wumpusCount){
+    public void deal_with_wumpus(Grid g, int wumpusCount){        //when we decide to deal with the wumpus this will shoot and handle outcomes
         //go thru frontier to find the square with the wumpus
         NodePercept wumpus = frontier.get(0);
         for(int i = 0; i < frontier.size(); i++){

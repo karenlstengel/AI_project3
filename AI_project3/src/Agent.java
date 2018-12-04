@@ -104,6 +104,7 @@ public class Agent {
     //   agent action methods
 
     public void solve(Grid g){
+        setupPreceptsGrid(g.getGrid()[0].length);
         frontier = new ArrayList<NodePercept>();
         Stack<NodePercept> node_stack = new Stack();
         node_stack.push(memory[1][1]);  //push the start node, I guess
@@ -137,7 +138,7 @@ public class Agent {
                 score--;
             }
         }while(safe_space() == true);
-        if(//deal with wumpus
+        if(0 != 0 //deal with wumpus
         )
         {
 

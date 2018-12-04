@@ -546,6 +546,7 @@ public class Agent {
         g.setWumpusLife(shoot(g));
 
         if( !g.isWumpusLife()) {
+            System.out.println("Scream!");
 
             //set the square 
             g.getGrid()[wumpus.getX()][wumpus.getY()].setWumpus(false);
@@ -586,8 +587,3 @@ public class Agent {
 
     }
 }
-
-//if gold take and bounce
-//move_to()
-//deal_with_wumpus()
-//choose_pit()

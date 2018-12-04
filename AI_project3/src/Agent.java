@@ -116,13 +116,17 @@ public class Agent {
         while(!isDead && !(foundGold && current.getY() == 1 && current.getX() == 1) && !node_stack.empty()){
             if(foundGold)
             {
+                score+=1000;
                 return_home();
-                break;
+                printMemory();
+                System.out.println("Score:" + getScore());
+                return;
             }
             if(g.getGrid()[current.getY()][current.getX()].isWumpus() || g.getGrid()[current.getY()][current.getX()].isPit())
             {
                 isDead = true;
                 System.out.println("You DIED");
+                return;
             }                                                                          
         do  {
 
@@ -152,10 +156,20 @@ public class Agent {
                 score--;
             } 
         }while(safe_space() == true);
-        if(0 != 0 //deal with wumpus
-        )
+        int wumpusCount = 0;
+        for (int yc = 1; yc < memory.length - 1; yc++)
         {
-
+            for (int xc = 1; xc < memory.length - 1; xc++)
+            {
+                if(memory[yc][xc].isWumpus())
+                {
+                    wumpusCount++;
+                }
+            }
+        }
+        if(wumpusCount <= 2)
+        {
+            deal_with_wumpus(g, wumpusCount);
         }
         else {
             NodePercept nextNode = findLeastRisky();
@@ -165,6 +179,7 @@ public class Agent {
             else {
                 move_to(nextNode.getY(), nextNode.getX());
                 node_stack.push(current);
+                printMemory();
             }
         }
 
@@ -312,23 +327,23 @@ public class Agent {
         while(done == false && dist < 100 && !(current.getY() == y && current.getX() == x))
         {
             dist++;
-            System.out.println(dist);
+            //System.out.println(dist);
             int loop = visited.size();
             for (int i = 0; i < loop; i++)
             {
-                System.out.println("First for");
+                //System.out.println("First for");
                 NodePercept temp = visited.get(i);
                 ArrayList<NodePercept> adjacent = return_adjacent(temp.getY(), temp.getX());
                 for (int j = 0; j < adjacent.size(); j++)
                 {
-                    System.out.println("second for");
+                    //System.out.println("second for");
                     NodePercept temp2 = adjacent.get(j);
                     if(!temp2.visitedForStack && temp2.isVisited())
                     {
-                        System.out.println("not visited for stack, is visited tho");
+                        //System.out.println("not visited for stack, is visited tho");
                         if(temp2.getY() == y && temp2.getX() == x)
                         {
-                            System.out.println("Is the square we're looking for");
+                            //System.out.println("Is the square we're looking for");
                             done = true;
                             break;
                         }
@@ -561,7 +576,7 @@ public class Agent {
         if(arrow){
             // shoot in current direction.
             //north (i -1), south (i +1), east(j +1), west (j-1)
-
+            System.out.println("shooting");
 
             // if arrow enters square of wumpus then wumpuslife = false
             if(direction.equals("north")){
@@ -682,7 +697,7 @@ public class Agent {
         return frontier;
     }
 
-    public void deal_with_wumpus(Grid g){
+    public void deal_with_wumpus(Grid g, int wumpusCount){
         //go thru frontier to find the square with the wumpus
         NodePercept wumpus = frontier.get(0);
         for(int i = 0; i < frontier.size(); i++){
@@ -691,7 +706,7 @@ public class Agent {
                 break;
             }
         }
-        ArrayList<NodePercept> adj = return_adjacent(wumpus.getY(), wumpus.getX());
+        ArrayList<NodePercept> adj = return_adjacent(wumpus.getX(), wumpus.getY());
         NodePercept moveTo = adj.get(0);
 
         //check adjacent squares for safety; take first safe option
@@ -732,6 +747,7 @@ public class Agent {
             for(int i = 0; i < memory.length; i++){
                 for(int j = 0; j< memory[0].length; j++){
                       memory[i][j].setWumpus(false);
+                      g.getGrid()[i][j].setWumpus(false); //remove wumpus's existence from original grid
                 }
             }
         }

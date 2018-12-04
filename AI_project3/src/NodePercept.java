@@ -80,7 +80,7 @@ public class NodePercept {
     }
 
     public boolean is_safe() {
-        if(!wumpus && !wall && !pit)
+        if((!wumpus && !wall && !pit) || is_safe)
         {
             return true;
         }

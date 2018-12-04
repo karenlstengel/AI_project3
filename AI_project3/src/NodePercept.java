@@ -1,4 +1,5 @@
 /**
+ * @author Karen Stengel
  * this class is what the agent understands.
  */
 
@@ -9,7 +10,6 @@ public class NodePercept {
     private boolean gold;
     private boolean wall;
     private boolean visited;
-    private boolean isSolved; //if we have either visited and is safe or have inferred whats in the pit
     private char symbol;
     private int y_val;
     private int x_val;
@@ -25,7 +25,6 @@ public class NodePercept {
         this.wumpus = true;
         this.pit = true;
         this.visited = false;
-        this.isSolved = false;
         this.is_safe = false;
     }
 

@@ -12,7 +12,7 @@ public class Grid {
     private Node[][] grid;
     private boolean wumpusLife;      // keeps track of whether the wumpus lives or not
 
-    public Grid(int dim){
+    public Grid(int dim){      //creates square grid of size dim
         grid = new Node[dim + 2][dim + 2];
 
         for(int i = 0; i < grid.length; i++){
@@ -32,7 +32,7 @@ public class Grid {
     }
 
 
-    public void placeObstacles() {
+    public void placeObstacles() {       // places gold, wumpus and pits
         grid[1][1].setSymbol('A');
         Random rand = new Random();
         //nothing can be placed in 0,0 since that is where the user will start.
@@ -82,7 +82,7 @@ public class Grid {
 
     }
 
-    public void setSenses() {
+    public void setSenses() {   //set up senses for each room
         // index 0 = stench; 1 = breeze; 2 = glitter; 3 = bump
 
         //set boundaries
@@ -168,7 +168,7 @@ public class Grid {
         }
     }
 
-    public void printGrid(){
+    public void printGrid(){     //prints grid
         for(int i = 0; i < grid.length; i++){
             for(int j = 0; j < grid[0].length; j++){
                 System.out.print(grid[i][j].getSymbol() + " ");

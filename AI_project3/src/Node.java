@@ -1,6 +1,6 @@
 /**
  *
- * @author
+ * @author  Karen Stengel
  * this class represents the locations on the search grid
  */
 

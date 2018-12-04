@@ -12,6 +12,7 @@ public class Main {
             int choice = 4;
             Scanner in = new Scanner(System.in);
 
+            //menu for users to pick their grid sizes
             while(choice != 0){
                 System.out.println();
                 System.out.println("what size world would you like to solve? Must be an integer > 0: ");
@@ -23,6 +24,7 @@ public class Main {
                     return;
                 }
 
+                //create grid and an agent and have the agent solve the grid
                 Grid g = new Grid(choice);
                 g.printGrid();
                 Agent a = new Agent();

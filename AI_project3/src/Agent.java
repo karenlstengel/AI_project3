@@ -1,5 +1,5 @@
 /**
- * @author
+ * @author  Karen Stengel, Jared Thompson,
  *
  * this class is the agent. responsible for keeping track of what the agent has discovered while exploring
  * the cave. responisible for moving and making locial decisions.
@@ -23,7 +23,7 @@ public class Agent {
     {
          this.foundGold = false;
          this.arrow = true;
-         this.direction = "north";      //right
+         this.direction = "east";      //right
          this.isDead = false;
 
     }
